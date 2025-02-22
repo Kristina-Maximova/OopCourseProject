@@ -1,6 +1,9 @@
 class Vacancy():
     """ Класс для представления вакансии"""
 
+    Vacancy = []
+
+
     def __init__(self, name: str, salary: float | None, created_at: str, url: str, requirement: str, schedule: str):
         self.name = name
         self.salary = salary if salary is not None else 0.0
