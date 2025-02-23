@@ -18,8 +18,9 @@ class Vacancies(ABC):
 
 
 
-class HeadHunterVacncies():
-    """ Класс для работы с  вакансиями с сайта HeadHunter"""
+class VacanciesToJSON():
+    """ Класс для сохранения информации о вакансиях в JSON-файл """
+    pass
 
 
 
@@ -27,12 +28,14 @@ class HeadHunterVacncies():
 if __name__ == "__main__":
     pass
 #  проверка на уникальность по ключу 'url'
-urls = set()
-unique_vacancies = []
+# urls = set()
+# unique_vacancies = []
+#
+# for vacancy in vacancies:
+#     if vacancy['url'] not in urls:
+#         urls.add(vacancy['url'])
+#         unique_vacancies.append(vacancy)
+#
+# print(unique_vacancies)
 
-for vacancy in vacancies:
-    if vacancy['url'] not in urls:
-        urls.add(vacancy['url'])
-        unique_vacancies.append(vacancy)
 
-print(unique_vacancies)

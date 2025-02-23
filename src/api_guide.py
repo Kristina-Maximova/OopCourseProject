@@ -2,29 +2,26 @@ from abc import ABC, abstractmethod
 import requests
 import json
 
-# это потом в env спрятать надо:
-my_gmail = 'tinamaximova21@gmail.com'
-
 
 class ApiExplorer(ABC):
     """ Абстрактный класс для работы со сторонними сервисами через API"""
 
     @abstractmethod
-    def _may_connect(self):
+    def __may_connect(self, *args, **kwargs):
         pass
 
     @abstractmethod
-    def _get_vacancies(self, *args, **kwargs):
+    def get_vacancies(self, *args, **kwargs):
         pass
 
 
 class HH(ApiExplorer):
     """ Класс для работы с API HeadHunter """
 
-    def __init__(self, database=""):
-        self._url = 'https://api.hh.ru/vacancies'
-        self._headers = {'HH-User-Agent': f'OopCourseProject ({my_gmail})'}
-        self._params = {
+    def __init__(self):
+        self.__url = 'https://api.hh.ru/vacancies'
+        self.__headers = {'HH-User-Agent': f'OopCourseProject (e-mail)'}
+        self.__params = {
             'text': '',
             'search_field': 'name',
             'area': 1,
@@ -36,10 +33,10 @@ class HH(ApiExplorer):
         self.vacancies = []
 
 
-    def _may_connect(self):
+    def _ApiExplorer__may_connect(self) -> bool:
         """ Метод для проверки соединения с сайтом HH.ru"""
         try:
-            response = requests.get(self._url, headers=self._headers, params=self._params)
+            response = requests.get(self.__url, headers=self.__headers, params=self.__params)
             if response.status_code == 200:
                 return True
             else:
@@ -49,21 +46,20 @@ class HH(ApiExplorer):
             print("Ошибка соединения с сайтом")
             return False
 
-
-    def _get_vacancies(self, key_word: str) -> list:
+    def get_vacancies(self, key_word: str) -> list:
         """ Метод для получения вакансий с сайта HH.ru"""
-        self._params['text'] = key_word
-        if self._may_connect():
+        self.__params['text'] = key_word
+        if self._ApiExplorer__may_connect():
             self.vacancies = []
             while True:
-                response = requests.get(self._url, headers=self._headers, params=self._params)
+                response = requests.get(self.__url, headers=self.__headers, params=self.__params)
                 data = response.json()
                 self.vacancies += data['items']
 
-                if data['pages'] == self._params['page']:
+                if data['pages'] == self.__params['page']:
                     break
                 else:
-                    self._params['page'] += 1
+                    self.__params['page'] += 1
 
             result = []
             for vacancy in self.vacancies:
@@ -74,7 +70,6 @@ class HH(ApiExplorer):
                     'url': vacancy['url'],
                     'requirement': vacancy['snippet']['requirement'],
                     'schedule': vacancy['schedule']['name']
-
                 }
                 result.append(vacancy_data)
 
@@ -86,5 +81,5 @@ class HH(ApiExplorer):
 
 if __name__ == "__main__":
     hh_obj = HH()
-    vac1 = hh_obj._get_vacancies("Python developer")
+    vac1 = hh_obj.get_vacancies("Python")
     print(vac1)
