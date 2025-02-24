@@ -51,6 +51,16 @@ class Vacancy:
         compared = self._get_compared_operand(other)
         return self.salary >= compared
 
+    @property
+    def to_dict(self):  # с декоратором вызов без круглых скобок
+        return {"name": self.name,
+                "salary": self.salary,
+                "created_at": self.created_at,
+                "url": self.url,
+                "requirement": self.requirement,
+                "schedule": self.schedule}
+
+
     @staticmethod
     def _get_compared_operand(other) -> int | float | None:
         """ Получение и валидация сравниваемого значения в операторах сравнения"""
@@ -101,6 +111,7 @@ if __name__ == "__main__":
                                      'Опыт с другими языками программирования, например...',
                       'schedule': 'Полный день'})
     print(vac1)
+    print(vac1.to_dict)
 
     print(vac1 > vac2)
 
