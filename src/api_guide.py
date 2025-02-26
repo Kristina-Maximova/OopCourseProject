@@ -1,18 +1,6 @@
-from abc import ABC, abstractmethod
 import requests
 import json
-
-
-class ApiExplorer(ABC):
-    """ Абстрактный класс для работы со сторонними сервисами через API"""
-
-    @abstractmethod
-    def __may_connect(self, *args, **kwargs):
-        pass
-
-    @abstractmethod
-    def get_vacancies(self, *args, **kwargs):
-        pass
+from src.api_abstract import ApiExplorer
 
 
 class HH(ApiExplorer):
@@ -32,8 +20,9 @@ class HH(ApiExplorer):
         }
         self.vacancies = []
 
-
-    def _ApiExplorer__may_connect(self) -> bool:
+    # метод должен быть приватным по условию задания.
+    # Но при наследовании имя переопределяется, поэтому тут слово с большой буквы
+    def _ApiExplorer__may_connect(self) -> bool:  # No error!
         """ Метод для проверки соединения с сайтом HH.ru"""
         try:
             response = requests.get(self.__url, headers=self.__headers, params=self.__params)
@@ -64,18 +53,19 @@ class HH(ApiExplorer):
             result = []
             for vacancy in self.vacancies:
                 vacancy_data = {
-                    'name': vacancy['name'],
-                    'salary': vacancy['salary']['from'] if vacancy['salary']['from'] is not None else 0.0,
-                    'created_at': vacancy['created_at'],
-                    'url': vacancy['url'],
-                    'requirement': vacancy['snippet']['requirement'],
-                    'schedule': vacancy['schedule']['name']
+                    'name': vacancy.get('name'),
+                    'salary': vacancy.get('salary', {}).get('from', 0.0),
+                    'currency': vacancy.get('salary', {}).get('currency'),
+                    'created_at': vacancy.get('created_at'),
+                    'url': vacancy.get('url'),
+                    'requirement': vacancy.get('snippet', {}).get('requirement'),
+                    'schedule': vacancy.get('schedule', {}).get('name')
                 }
                 result.append(vacancy_data)
 
             print(f"Найдено вакансий: {len(result)}")
             return result
-        print("Не удалось получить данные")
+        print("Не удалось получить данные c hh.ru")
         return []
 
 

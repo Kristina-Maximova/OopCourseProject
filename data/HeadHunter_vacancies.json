@@ -1,0 +1,32 @@
+[
+    {
+        "name": "Middle Backend Developer (Python FastAPI + SQL)",
+        "salary": 210000,
+        "currency": "RUR",
+        "created_at": "2025-02-21T14:46:49+0300",
+        "url": "https://api.hh.ru/vacancies/117570423?host=hh.ru",
+        "requirement": "Написание качественного кода и тестов к нему. Необходимый стек: <highlighttext>Python</highlighttext> (asyncio), чистый SQL (не ORM), FastAPI (весь функционал), микросервисная архитектура...",
+        "schedule": "Удаленная работа",
+        "vac_id": 1
+    },
+    {
+        "name": "Python-разработчик",
+        "salary": 80000,
+        "currency": "RUR",
+        "created_at": "2025-02-21T14:00:01+0300",
+        "url": "https://api.hh.ru/vacancies/116455408?host=hh.ru",
+        "requirement": "От 1 года коммерческой <highlighttext>разработки</highlighttext>. Умение структурно мыслить, а также разбивать проект на подзадачи. Опыт с другими языками программирования, например...",
+        "schedule": "Полный день",
+        "vac_id": 2
+    },
+    {
+        "name": "test4",
+        "salary": 0.04,
+        "currency": "RUR",
+        "created_at": "test_date4",
+        "url": "test_url4",
+        "requirement": "test_requirement4",
+        "schedule": "test_schedule4",
+        "vac_id": 4
+    }
+]
