@@ -13,7 +13,7 @@ class HH(ApiExplorer):
             'text': '',
             'search_field': 'name',
             'area': 1,
-            'period': 1,
+            'period': 7,
             'only_with_salary': True,
             'per_page': 100,
             'page': 0

@@ -2,12 +2,16 @@ from typing import Any
 
 from src.api_exchange_rate import get_usd_rate
 from src.api_guide import HH
+from src.mixin_logger import MixinLogger
 
 
-class Vacancy:
+class Vacancy(MixinLogger):
     """ Класс для представления вакансии"""
     vacancies_counter = 0
-    __slots__ = ("name", "salary", "currency", "created_at", "url", "requirement", "schedule", "vac_id")
+    __slots__ = ("name", "salary", "currency", "created_at", "url", "requirement", "schedule", "vac_id",)
+    # так как в слотах нецелесообразно прописывать ("logger", "filehandler", "file_formatter"),
+    # logger работает только в инициализаторе
+
 
     def __init__(self, name: str, salary: float | None, currency: str, created_at: str,
                  url: str, requirement: str, schedule: str, vac_id: int = None):
@@ -23,6 +27,8 @@ class Vacancy:
         if not vac_id:
             Vacancy.vacancies_counter += 1
         self.vac_id = vac_id if vac_id else Vacancy.vacancies_counter
+        super().__init__()
+        self.log_debug(f"Создана вакансия {self.vac_id}")
 
     def __str__(self) -> str:
         """ Метод строкового отображения вакансии """

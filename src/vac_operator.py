@@ -1,9 +1,11 @@
 import json
+
+from src.mixin_logger import MixinLogger
 from src.operator_abstract import VacanciesOperator
 from src.vacancy import Vacancy
 
 
-class JsonOperator(VacanciesOperator):
+class JsonOperator(VacanciesOperator, MixinLogger):
     """ Класс для сохранения информации о вакансиях в JSON-файл """
 
     def __init__(self, source_name: str, source_url: str, vacancies_list: list, file_path: str = ""):
@@ -12,6 +14,7 @@ class JsonOperator(VacanciesOperator):
         self.source_url = source_url
         self.__file_path = file_path if file_path else f"..\\data\\{source_name.replace(' ', '_')}_vacancies.json"
         self.vacancies_list = vacancies_list if vacancies_list else []
+        super().__init__()
 
     # Методы __enter__ и __exit__ позволяют создать контекстный менеджер для работы с json-файлом
     def __enter__(self):
@@ -33,7 +36,7 @@ class JsonOperator(VacanciesOperator):
                 except TypeError as e:
                     print(f"Данные в файле не читаются как вакансии: {e}")
         finally:
-            print(f"в базе вакансий было: {len(self.vacancies_list)}")
+            self.log_info(f"в базе вакансий было: {len(self.vacancies_list)}")
             return self.vacancies_list
 
     # ? Задача на доделать: как переписывать только определенную страницу в большом файле.
@@ -49,7 +52,7 @@ class JsonOperator(VacanciesOperator):
             except json.decoder.JSONDecodeError:
                 print("Ошибка, данные не записаны в файл")
             else:
-                print(f"в базе вакансий стало: {len(self.vacancies_list)}")
+                self.log_info(f"в базе вакансий стало: {len(self.vacancies_list)}")
         else:
             print("Нет данных для записи")
 
@@ -60,29 +63,28 @@ class JsonOperator(VacanciesOperator):
                 self.vacancies_list.append(new_vacancy)
 
     def get_vacancy(self, vac_id: int) -> None | Vacancy:
-        """ Получает объект класса Vacancy из json-файла"""
+        """ Получает объект класса Vacancy из json-файла по номеру id"""
         with self:
             for vacancy in self.vacancies_list:
                 if vacancy.vac_id == vac_id:
                     return vacancy
 
     def del_vacancy(self, unwanted_vacancy):
+        """ Удаляет объект класса Vacancy из json-файла"""
         with self:
-            if unwanted_vacancy in  self.vacancies_list:
+            if unwanted_vacancy in self.vacancies_list:
                 self.vacancies_list.remove(unwanted_vacancy)
 
     def add_vacancies(self, vacancies: list):
         """ Метод добавления списка объектов класса Vacancy в json-файл"""
         if vacancies:
             with self:
-                try:
-                    for vacancy in vacancies:
-                        if not isinstance(vacancy, Vacancy):
-                            raise TypeError("Внести в базу можно только объект класса Vacancy")
-                        elif vacancy not in self.vacancies_list:
-                            self.vacancies_list.append(vacancy)
-                except Exception as e:
-                    print(f"Вакансии не добавлены в файл, ошибка {e}")
+                for vacancy in vacancies:
+                    if not isinstance(vacancy, Vacancy):
+                        raise TypeError("Внести в базу можно только объект класса Vacancy")
+                    elif vacancy not in self.vacancies_list:
+                        self.vacancies_list.append(vacancy)
+
 
     def get_vacancies(self, criteria: dict) -> list | None:
         """ Метод для получения из json-файла вакансий с заданными критериями
@@ -103,17 +105,14 @@ class JsonOperator(VacanciesOperator):
                 print(f"найдено таких вакансий: {len(filtered_vacancies)}")
                 return filtered_vacancies
 
-    def del_vacancies(self, vacancies: list):
+    def del_vacancies(self, criteria: dict):
         """ Метод для удаления нескольких вакансий из json-файла """
-        with self:
-            if len(self.vacancies_list) > 0:
-                data = []
-                if vacancies:
-                    for vacancy in vacancies:
-                        if not isinstance(vacancy, Vacancy):
-                            raise TypeError("Удалить можно только объект класса Vacancy")
-                        elif vacancy in self.vacancies_list:
-                            self.vacancies_list.remove(vacancy)
+        list_to_delete = self.get_vacancies(criteria)
+        if list_to_delete and len(list_to_delete) > 0:
+            print(f"Будет удалено вакансий: {len(list_to_delete)}")
+            with self:
+                new_list = [vacancy for vacancy in self.vacancies_list if vacancy not in list_to_delete]
+                self.vacancies_list = new_list
 
 
 if __name__ == "__main__":
@@ -158,24 +157,10 @@ if __name__ == "__main__":
 
     print(f"вакансий в списке объекта: {len(vac_to_json1.vacancies_list)}")
 
-    # vac_to_json1.add_vacancy(vac3)
-    vac_to_json1.add_vacancies([vac3, vac4])
-
-
     vac_to_json1.del_vacancy(vac3)
 
+    criteria1 = {'salary': 0.03}
 
-    # result = vac_to_json1.get_vacancies({'name': "test4"})
-    # print(*result)
 
-    # vac_to_json1.add_vacancies([vac3])
-    # print(f"вакансий в списке объекта: {len(vac_to_json1.vacancies_list)}")
 
-    # my_wanted_vacancies = vac_to_json1.get_vacancies({'salary': 80000})
-    # print(len(my_wanted_vacancies))
 
-    # vac_to_json1.del_vacancies([vac3])
-    # print(f"вакансий в списке объекта: {len(vac_to_json1.vacancies_list)}")
-
-    # vac_to_json1.add_vacancies([vac3])
-    # print(f"вакансий в списке объекта: {len(vac_to_json1.vacancies_list)}")
