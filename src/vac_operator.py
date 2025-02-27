@@ -1,7 +1,7 @@
 import json
 
 from src.mixin_logger import MixinLogger
-from src.operator_abstract import VacanciesOperator
+from src.abstract_operator import VacanciesOperator
 from src.vacancy import Vacancy
 
 
@@ -85,7 +85,6 @@ class JsonOperator(VacanciesOperator, MixinLogger):
                     elif vacancy not in self.vacancies_list:
                         self.vacancies_list.append(vacancy)
 
-
     def get_vacancies(self, criteria: dict) -> list | None:
         """ Метод для получения из json-файла вакансий с заданными критериями
          criteria: параметр и его значение у вакансий, которые надо получить.
@@ -160,7 +159,3 @@ if __name__ == "__main__":
     vac_to_json1.del_vacancy(vac3)
 
     criteria1 = {'salary': 0.03}
-
-
-
-

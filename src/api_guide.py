@@ -1,6 +1,6 @@
 import requests
 import json
-from src.api_abstract import ApiExplorer
+from src.abstract_api import ApiExplorer
 
 
 class HH(ApiExplorer):

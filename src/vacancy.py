@@ -3,6 +3,7 @@ from typing import Any
 from src.api_exchange_rate import get_usd_rate
 from src.api_guide import HH
 from src.mixin_logger import MixinLogger
+import datetime
 
 
 class Vacancy(MixinLogger):
@@ -13,7 +14,7 @@ class Vacancy(MixinLogger):
     # logger работает только в инициализаторе
 
 
-    def __init__(self, name: str, salary: float | None, currency: str, created_at: str,
+    def __init__(self, name: str, salary: float | None, currency: str, created_at: str | datetime.datetime ,
                  url: str, requirement: str, schedule: str, vac_id: int = None):
         """ Конструктор класса вакансия для создания объектов"""
         self.name = name
@@ -97,7 +98,7 @@ class Vacancy(MixinLogger):
             return 0.0
 
     @classmethod
-    def new_vacancies_obj(cls, data_with_vacancies: list[dict | None]) -> list:
+    def cast_to_object_list(cls, data_with_vacancies: list[dict | None]) -> list:
         """ Класс-метод для преобразования списка словарей в список объектов класса"""
         if len(data_with_vacancies) == 0:
             return []
@@ -145,6 +146,6 @@ if __name__ == "__main__":
 
     # hh_obj = HH()
     # data_from_hh = hh_obj.get_vacancies('Python')
-    # casted_to_list_vacs = Vacancy.new_vacancies_obj(data_from_hh)
+    # casted_to_list_vacs = Vacancy.cast_to_object_list(data_from_hh)
     # for elem in casted_to_list_vacs[0:3]:
     #     print(elem)
