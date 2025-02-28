@@ -10,9 +10,13 @@ class VacanciesProcessing(ABC):
         self.vacancies = vacancies  if vacancies else []
         pass
 
-    # @abstractmethod
-    # def process(self, *args, **kwargs):
-    #     """ обязывает определять метод обработки данных в дочерних классах"""
-    #     pass
+    @abstractmethod
+    def sort_vacancies(self, *args, **kwargs):
+        """ обязывает определять метод сортировки данных в дочерних классах"""
+        pass
 
+    @abstractmethod
+    def filter_vacancies(self, *args, **kwargs):
+        """ обязывает определять метод фильтрации данных в дочерних классах"""
+        pass
 

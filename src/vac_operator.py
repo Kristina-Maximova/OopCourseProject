@@ -156,6 +156,8 @@ if __name__ == "__main__":
 
     print(f"вакансий в списке объекта: {len(vac_to_json1.vacancies_list)}")
 
-    vac_to_json1.del_vacancy(vac3)
+    vac31 = vac_to_json1.get_vacancy(3)
+    print(vac3.created_at)
 
+    print(f"вакансий в списке объекта: {len(vac_to_json1.vacancies_list)}")
     criteria1 = {'salary': 0.03}

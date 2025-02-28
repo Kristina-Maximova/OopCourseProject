@@ -20,10 +20,20 @@
         "vac_id": 2
     },
     {
+        "name": "test3",
+        "salary": 0.03,
+        "currency": "RUR",
+        "created_at": null,
+        "url": "test_url3",
+        "requirement": "test_requirement3",
+        "schedule": "test_schedule3",
+        "vac_id": 3
+    },
+    {
         "name": "test4",
         "salary": 0.04,
         "currency": "RUR",
-        "created_at": "test_date4",
+        "created_at": null,
         "url": "test_url4",
         "requirement": "test_requirement4",
         "schedule": "test_schedule4",

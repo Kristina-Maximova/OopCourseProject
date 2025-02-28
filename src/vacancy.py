@@ -10,17 +10,17 @@ class Vacancy(MixinLogger):
     """ Класс для представления вакансии"""
     vacancies_counter = 0
     __slots__ = ("name", "salary", "currency", "created_at", "url", "requirement", "schedule", "vac_id",)
+
     # так как в слотах нецелесообразно прописывать ("logger", "filehandler", "file_formatter"),
     # logger работает только в инициализаторе
 
-
-    def __init__(self, name: str, salary: float | None, currency: str, created_at: str | datetime.datetime ,
+    def __init__(self, name: str, salary: float | None, currency: str, created_at: str | datetime.datetime | None,
                  url: str, requirement: str, schedule: str, vac_id: int = None):
         """ Конструктор класса вакансия для создания объектов"""
         self.name = name
         self.currency = currency
         self.salary = self.__is_valid_salary(value=salary)
-        self.created_at = created_at
+        self.created_at = self.__is_valid_date(created_at)
         self.url = url
         self.requirement = requirement
         self.schedule = schedule
@@ -84,7 +84,6 @@ class Vacancy(MixinLogger):
         return other if isinstance(other, (int, float)) else other.salary
 
     # ? как переводить зп в USD в руб, не увеличивая количество слотов
-
     def __is_valid_salary(self, value: Any) -> float:
         """ Метод для валидации данных по зарплате
         Если во входящих данных указана в USD, по-умолчанию переводится в руб. """
@@ -96,6 +95,20 @@ class Vacancy(MixinLogger):
             return value
         else:
             return 0.0
+
+    @staticmethod
+    def __is_valid_date(value: Any) -> str | None:
+        """ Метод для валидации данных по дате создания вакансии
+         Проверяет, что в аргументе created_ad либо строка с датой в
+         формате ISO 8601 либо None """
+        try:
+            date_obj_value = datetime.datetime.fromisoformat(value)
+            if isinstance(date_obj_value, datetime.datetime):
+                return value
+        except ValueError:
+            return None
+        except TypeError:
+            return None
 
     @classmethod
     def cast_to_object_list(cls, data_with_vacancies: list[dict | None]) -> list:
@@ -112,6 +125,21 @@ class Vacancy(MixinLogger):
             except AttributeError:
                 print("Ошибка преобразования данных в объект класса Vacancy")
                 return []
+
+    def to_datetime(self):
+        """ Метод для преобразования строки с датой в аргументе created_at
+        из строки формата ISO 8601 в объект datetime"""
+        if self.created_at:
+            self.created_at = datetime.datetime.fromisoformat(self.created_at)
+        return self
+
+    def to_iso_str(self):
+        """ Метод для преобразования строки с датой в аргументе created_at
+         из объекта datetime в строку формата ISO 8601"""
+        if self.created_at:
+            if isinstance(self.created_at, datetime.datetime):
+                self.created_at = self.created_at.isoformat()
+        return self
 
 
 if __name__ == "__main__":
@@ -138,12 +166,11 @@ if __name__ == "__main__":
 
                       })
     print(vac1)
-    print(type(vac1))
-    print(vac1.salary, vac1.currency)
-    print(vac2.salary, vac2.currency)
-
-    print(vac1 > vac2)
-
+    print(vac2.created_at)
+    vac2.to_datetime()
+    print(vac2.created_at, type(vac2.created_at))
+    vac2.to_iso_str()
+    print(vac2.created_at, type(vac2.created_at))
     # hh_obj = HH()
     # data_from_hh = hh_obj.get_vacancies('Python')
     # casted_to_list_vacs = Vacancy.cast_to_object_list(data_from_hh)

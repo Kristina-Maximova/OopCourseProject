@@ -1,57 +1,98 @@
 from src.abstract_processing import VacanciesProcessing
 from src.vacancy import Vacancy
 import datetime
+from datetime import timezone
 
 
 class SalaryAnalyzer(VacanciesProcessing):
     """ Класс для обработки данных с вакансиями по зарплатe """
 
-    def __init__(self, vacancies: list, lower_limit: float=0.0):
+    def __init__(self, vacancies: list, lower_limit: float = 0.0):
         """
         Конструктор класса для обработки данных по зарплате
         :param vacancies: список объектов класса Vacancy
-        :param salary_lower_limit:
+        :param lower_limit: число, нижняя граница при фильтрации
         """
         super().__init__(vacancies)
-        self.vacancies = self.sort_by_salary()
+        self.vacancies = self.sort_vacancies()
         self.lower_limit = lower_limit
 
-
-    def sort_by_salary(self):
+    def sort_vacancies(self):
         """ Метод для сортировки списка объектов класса Vакансии по зарплате"""
         if len(self.vacancies) > 0:
             return sorted(self.vacancies, key=lambda x: x.salary, reverse=True)
         return self.vacancies
 
-
-    def filter_by_salary(self, lower_limit):
-        """ Метод для фильтрации списка объектов класса Vакансии выше определенного лимита"""
+    def filter_vacancies(self, lower_limit):
+        """ Метод получения списка объектов класса Vacancy
+        с зарплатой выше определенного лимита"""
         if len(self.vacancies) > 0:
             filtered_list = list(vacancy for vacancy in self.vacancies if vacancy >= lower_limit)
             return filtered_list if filtered_list else []
 
 
-
 class DateAnalyzer(VacanciesProcessing):
+    """ Класс для обработки данных с вакансиями по дате создания"""
 
-    def __init__(self, vacancies: list):
+    def __init__(self, vacancies: list, date_from: str = ""):
+        """
+        Конструктор класса для обработки данных с вакансиями по дате создания
+        :param vacancies: список объектов класса Vacancy
+        :param date_from: строка с датой в формате ДД.MM.ГГ
+        """
         super().__init__(vacancies)
+        self.vacancies_no_date = []
+        self.date_from = date_from
 
-    def sort_by_date(self):
+    def __enter__(self):
+        """ Метод для приведения аргумента вакансий created_at к типу datetime
+        и временного удаления вакансий с отсутствующей датой"""
+        if len(self.vacancies) > 0:
+            # преобразуем дату создания в объект datetime
+            self.vacancies = [vacancy.to_datetime() for vacancy in self.vacancies]
+            # выбираем вакансии со значением created_at = None и помещаем их в отдельный атрибут
+            for vacancy in self.vacancies:
+                if not vacancy.created_at:
+                    self.vacancies_no_date.append(vacancy)
+                    self.vacancies.remove(vacancy)
+            return self
+        return self
 
-        for vacancy in self.vacancies:
-            vacancy.created_at = datetime.datetime.fromisoformat(vacancy.created_at)
-
-        self.vacancies = sorted(self.vacancies, key=lambda x: x.created_at)
-
-        for vacancy in self.vacancies:
-            vacancy.created_at.isoformat()
+    def __exit__(self, exc_type, exc_val, exc_tb) -> list:
+        """ Метод для возвращения типа аргумента вакансий created_at в ISO строку
+        и возвращения вакансий без даты в конец списка
+        """
+        if len(self.vacancies) > 0:
+            # возвращаем строковый тип ISO атрибуту created_at
+            self.vacancies = [vacancy.to_iso_str() for vacancy in self.vacancies]
+            # вакансии с None датой возвращаем в конец списка
+            if self.vacancies_no_date:
+                for vacancy in self.vacancies_no_date:
+                    self.vacancies.append(vacancy)
+            return self.vacancies
         return self.vacancies
 
-    def filter_by_date(self):
-        pass
+    def sort_vacancies(self):
+        """ Метод для сортировки вакансий по дате создания """
+        if len(self.vacancies) > 0:
+            with self:
+                # сортируем список вакансий с указанной датой
+                self.vacancies = sorted(self.vacancies, key=lambda x: x.created_at, reverse=True)
+        return self.vacancies
 
-
+    def filter_vacancies(self, date_from):
+        if len(self.vacancies) > 0:
+            try:
+                # Создаем offset-naive datetime
+                formated_date = datetime.datetime.strptime(date_from, "%d.%m.%y")
+                # Преобразуем его в offset-aware datetime, т.к. такой тип в вакансиях
+                formated_date = formated_date.replace(tzinfo=timezone.utc)
+                with self:
+                    filtered_list = list(vacancy for vacancy in self.vacancies if vacancy.created_at >= formated_date)
+                    return filtered_list
+            except Exception as e:
+                print(f"Фильтрация по дате  не проведена, ошибка: {e}")
+                return []
 
 
 if __name__ == "__main__":
@@ -92,17 +133,25 @@ if __name__ == "__main__":
                       'schedule': "test_schedule4",
                       })
     my_list = [vac1, vac2, vac3, vac4]
-
-
-    analyzer1 = SalaryAnalyzer(my_list)
-    my_list1 = analyzer1.vacancies
-    for vac in my_list1:
+    for vac in my_list:
         print(vac)
 
-    analyser2 = DateAnalyzer(my_list1)
-    my_list2 = analyser2.sort_by_date()
-    for vac in my_list2:
+    # печать линии в консоли:
+    print('-' * 200)
+
+    # analyzer1 = SalaryAnalyzer(my_list)
+    # my_list1 = analyzer1.vacancies
+    # for vac in my_list1:
+    #     print(vac)
+    # print('-' * 200)
+    analyser2 = DateAnalyzer(my_list)
+    my_list2 = analyser2.sort_vacancies()
+    # for vac in my_list2:
+    #     print(vac, vac.created_at, type(vac.created_at))
+
+
+    filtered_by_date_list = analyser2.filter_vacancies("21.02.25")
+
+    for vac in filtered_by_date_list:
         print(vac, vac.created_at)
-
-
-
+    print('-' * 200)
