@@ -73,7 +73,9 @@ class DateAnalyzer(VacanciesProcessing):
         return self.vacancies
 
     def sort_vacancies(self):
-        """ Метод для сортировки вакансий по дате создания """
+        """ Метод для сортировки вакансий по дате создания.
+        в начале списка будут последние по дате.
+        """
         if len(self.vacancies) > 0:
             with self:
                 # сортируем список вакансий с указанной датой
@@ -81,6 +83,7 @@ class DateAnalyzer(VacanciesProcessing):
         return self.vacancies
 
     def filter_vacancies(self, date_from):
+        """ Метод для фильтрации вакансий"""
         if len(self.vacancies) > 0:
             try:
                 # Создаем offset-naive datetime
