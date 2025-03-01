@@ -34,7 +34,7 @@ class SalaryAnalyzer(VacanciesProcessing):
 class DateAnalyzer(VacanciesProcessing):
     """ Класс для обработки данных с вакансиями по дате создания"""
 
-    def __init__(self, vacancies: list, date_from: str = ""):
+    def __init__(self, vacancies: list):
         """
         Конструктор класса для обработки данных с вакансиями по дате создания
         :param vacancies: список объектов класса Vacancy
@@ -42,7 +42,7 @@ class DateAnalyzer(VacanciesProcessing):
         """
         super().__init__(vacancies)
         self.vacancies_no_date = []
-        self.date_from = date_from
+
 
     def __enter__(self):
         """ Метод для приведения аргумента вакансий created_at к типу datetime
@@ -95,7 +95,7 @@ class DateAnalyzer(VacanciesProcessing):
                     return filtered_list
             except Exception as e:
                 print(f"Фильтрация по дате  не проведена, ошибка: {e}")
-                return []
+                return self.vacancies
 
 
 if __name__ == "__main__":

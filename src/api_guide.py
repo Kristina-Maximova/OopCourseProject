@@ -13,7 +13,7 @@ class HH(ApiExplorer):
             'text': '',
             'search_field': 'name',
             'area': 1,
-            'period': 7,
+            'period': 7,    # получим данные за последние 7 дней
             'only_with_salary': True,
             'per_page': 100,
             'page': 0
@@ -63,7 +63,7 @@ class HH(ApiExplorer):
                 }
                 result.append(vacancy_data)
 
-            print(f"Найдено вакансий: {len(result)}")
+            print(f"Всего найдено вакансий: {len(result)}")
             return result
         print("Не удалось получить данные c hh.ru")
         return []

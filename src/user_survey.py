@@ -6,7 +6,7 @@ def user_interaction():
     platforms = ["HeadHunter"]
     while True:
         # получаем запрос на поиск вакансий
-        words_to_start_searching = ["вакансии", "вакансия", "работа", "работу"]
+        words_to_start_searching = ["вакансии", "вакансия", "вакансию", "работа", "работу"]
         search_query = input("Введите поисковый запрос: ")  # ожидаем ввод слов вакансия или работа
         word_match = list(word for word in words_to_start_searching if word in search_query.lower().split())
         if len(word_match) > 0:
@@ -65,4 +65,4 @@ def is_valid_date_from(user_date_from):
 
 if __name__ == "__main__":
     my_result = user_interaction()
-    print(my_result)
+    print(my_result)  # {'keywords': 'python', 'top_n': 3, 'date_from': '28.02.25'}

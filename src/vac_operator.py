@@ -1,8 +1,9 @@
 import json
-
+import os
 from src.mixin_logger import MixinLogger
 from src.abstract_operator import VacanciesOperator
 from src.vacancy import Vacancy
+
 
 
 class JsonOperator(VacanciesOperator, MixinLogger):
@@ -12,7 +13,7 @@ class JsonOperator(VacanciesOperator, MixinLogger):
         """ Конструктор класса для обработки данных с вакансиями и записи их в json-файл """
         self.source_name = source_name
         self.source_url = source_url
-        self.__file_path = file_path if file_path else f"..\\data\\{source_name.replace(' ', '_')}_vacancies.json"
+        self.__file_path = file_path if file_path else self._get_file_name(source_name)
         self.vacancies_list = vacancies_list if vacancies_list else []
         super().__init__()
 
@@ -51,6 +52,8 @@ class JsonOperator(VacanciesOperator, MixinLogger):
                     json.dump(data, file, ensure_ascii=False, indent=4)
             except json.decoder.JSONDecodeError:
                 print("Ошибка, данные не записаны в файл")
+            except FileNotFoundError:
+                print("Файл не найден")
             else:
                 self.log_info(f"в базе вакансий стало: {len(self.vacancies_list)}")
         else:
@@ -84,6 +87,8 @@ class JsonOperator(VacanciesOperator, MixinLogger):
                         raise TypeError("Внести в базу можно только объект класса Vacancy")
                     elif vacancy not in self.vacancies_list:
                         self.vacancies_list.append(vacancy)
+                return self
+
 
     def get_vacancies(self, criteria: dict) -> list | None:
         """ Метод для получения из json-файла вакансий с заданными критериями
@@ -112,6 +117,14 @@ class JsonOperator(VacanciesOperator, MixinLogger):
             with self:
                 new_list = [vacancy for vacancy in self.vacancies_list if vacancy not in list_to_delete]
                 self.vacancies_list = new_list
+
+
+    @staticmethod
+    def _get_file_name(source_name):
+        file_name = f"{source_name.replace(' ', '_')}_vacancies.json"
+        project_root = os.path.dirname(os.path.abspath(__file__))
+        path_to_file = os.path.join(project_root, "..", "data", file_name)
+        return path_to_file
 
 
 if __name__ == "__main__":
@@ -152,12 +165,16 @@ if __name__ == "__main__":
                       'schedule': "test_schedule4",
                       })
 
-    vac_to_json1 = JsonOperator("HeadHunter", "https://hh.ru", [vac1, vac2])
+    operator1 = JsonOperator("HeadHunter", "https://hh.ru", [])
 
-    print(f"вакансий в списке объекта: {len(vac_to_json1.vacancies_list)}")
+    print(f"вакансий в списке объекта: {len(operator1.vacancies_list)}")
 
-    vac31 = vac_to_json1.get_vacancy(3)
-    print(vac3.created_at)
+    vac_list = [vac3, vac4, vac1, vac2]
 
-    print(f"вакансий в списке объекта: {len(vac_to_json1.vacancies_list)}")
+    operator1.add_vacancies(vac_list[0:3])
+    # operator1.add_vacancies(vac_list1)
+    # find_vac = operator1.get_vacancy(3)
+    # print(find_vac)
+
+    print(f"вакансий в списке объекта: {len(operator1.vacancies_list)}")
     criteria1 = {'salary': 0.03}
