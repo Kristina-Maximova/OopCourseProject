@@ -8,6 +8,7 @@ class VacanciesProcessing(ABC):
     def __init__(self, vacancies: list, *args, **kwargs):
         """ обязывает в конструкторе иметь аргументом лист с вакансиями"""
         self.vacancies = vacancies  if vacancies else []
+        super().__init__()
         pass
 
     @abstractmethod

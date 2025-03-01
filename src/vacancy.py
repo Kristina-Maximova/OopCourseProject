@@ -65,6 +65,11 @@ class Vacancy(MixinLogger):
         compared = self._get_compared_operand(other)
         return self.salary >= compared
 
+    # так как методы сравнения определены по аргументу зарплата,
+    # и нужна будет проверка на уникальность, то определяем метод для использования c set()
+    def __hash__(self):
+        return hash((self.vac_id, self.name, self.requirement))
+
     @property
     def to_dict(self):  # с декоратором вызов без круглых скобок
         return {"name": self.name,
@@ -83,7 +88,7 @@ class Vacancy(MixinLogger):
             raise TypeError("Сравнение возможно только с объектом класса Vacancy или с числом")
         return other if isinstance(other, (int, float)) else other.salary
 
-    # ? как переводить зп в USD в руб, не увеличивая количество слотов
+    # ? как переводить зп в USD в руб., не увеличивая количество слотов
     def __is_valid_salary(self, value: Any) -> float:
         """ Метод для валидации данных по зарплате
         Если во входящих данных указана в USD, по-умолчанию переводится в руб. """

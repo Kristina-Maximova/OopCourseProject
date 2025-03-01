@@ -5,9 +5,12 @@ from src.processing import SalaryAnalyzer, DateAnalyzer
 from src.vac_operator import JsonOperator
 
 def main():
-    # получаем пользовательские настройки  В запросе ожидается слово вакансия или работа
-    user_settings = user_interaction()   # {'keywords': 'python', 'top_n': 3, 'date_from': '28.02.25'}
-    keywords = user_settings.get('keywords')
+    # Получаем пользовательские настройки. В запросе ожидается слово 'вакансия' или 'работа'
+    try:
+        user_settings = user_interaction()   # {'keywords': 'python', 'top_n': 3, 'date_from': '28.02.25'}
+        keywords = user_settings.get('keywords')
+    except AttributeError:
+        return None
     top_n = user_settings.get('top_n')
     date_from = user_settings.get('date_from')
 
@@ -35,7 +38,7 @@ def main():
     json_base_operator.add_vacancies(sorted_vacancies[0:top_n])
     print('-' * 119)
     if len(sorted_vacancies[0:top_n]) > 0:
-        print("Тор вакансии внесены в базу")
+        print("Вакансии из топ списка внесены в базу")
 
 
 

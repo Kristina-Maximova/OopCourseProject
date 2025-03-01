@@ -1,10 +1,11 @@
 from src.abstract_processing import VacanciesProcessing
+from src.mixin_logger import MixinLogger
 from src.vacancy import Vacancy
 import datetime
 from datetime import timezone
 
 
-class SalaryAnalyzer(VacanciesProcessing):
+class SalaryAnalyzer(VacanciesProcessing, MixinLogger):
     """ Класс для обработки данных с вакансиями по зарплатe """
 
     def __init__(self, vacancies: list, lower_limit: float = 0.0):
@@ -19,6 +20,7 @@ class SalaryAnalyzer(VacanciesProcessing):
 
     def sort_vacancies(self):
         """ Метод для сортировки списка объектов класса Vакансии по зарплате"""
+        self.log_debug("начата сортировка по зарплате")
         if len(self.vacancies) > 0:
             return sorted(self.vacancies, key=lambda x: x.salary, reverse=True)
         return self.vacancies
@@ -26,12 +28,13 @@ class SalaryAnalyzer(VacanciesProcessing):
     def filter_vacancies(self, lower_limit):
         """ Метод получения списка объектов класса Vacancy
         с зарплатой выше определенного лимита"""
+        self.log_debug("начата фильтрация по зарплате")
         if len(self.vacancies) > 0:
             filtered_list = list(vacancy for vacancy in self.vacancies if vacancy >= lower_limit)
             return filtered_list if filtered_list else []
 
 
-class DateAnalyzer(VacanciesProcessing):
+class DateAnalyzer(VacanciesProcessing, MixinLogger):
     """ Класс для обработки данных с вакансиями по дате создания"""
 
     def __init__(self, vacancies: list):
@@ -47,6 +50,7 @@ class DateAnalyzer(VacanciesProcessing):
     def __enter__(self):
         """ Метод для приведения аргумента вакансий created_at к типу datetime
         и временного удаления вакансий с отсутствующей датой"""
+        self.log_debug("начата обработка по дате")
         if len(self.vacancies) > 0:
             # преобразуем дату создания в объект datetime
             self.vacancies = [vacancy.to_datetime() for vacancy in self.vacancies]
@@ -62,6 +66,7 @@ class DateAnalyzer(VacanciesProcessing):
         """ Метод для возвращения типа аргумента вакансий created_at в ISO строку
         и возвращения вакансий без даты в конец списка
         """
+        self.log_debug("заканчивается обработка по дате")
         if len(self.vacancies) > 0:
             # возвращаем строковый тип ISO атрибуту created_at
             self.vacancies = [vacancy.to_iso_str() for vacancy in self.vacancies]
@@ -94,7 +99,7 @@ class DateAnalyzer(VacanciesProcessing):
                     filtered_list = list(vacancy for vacancy in self.vacancies if vacancy.created_at >= formated_date)
                     return filtered_list
             except Exception as e:
-                print(f"Фильтрация по дате  не проведена, ошибка: {e}")
+                self.log_warning(f"Фильтрация по дате  не проведена, ошибка: {e}")
                 return self.vacancies
 
 

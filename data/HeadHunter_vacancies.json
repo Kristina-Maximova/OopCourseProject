@@ -1,52 +1,72 @@
 [
     {
-        "name": "Операционный Шеф-повар",
-        "salary": 400000,
+        "name": "test3",
+        "salary": 0.03,
         "currency": "RUR",
-        "created_at": "2025-03-01T09:37:25+03:00",
-        "url": "https://api.hh.ru/vacancies/117581960?host=hh.ru",
-        "requirement": "Внедрять современные технологии и инновации в производственные процессы, оптимизируя рабочие методы и повышая эффективность команды. Имеете высшее образование в области...",
-        "schedule": "Полный день",
+        "created_at": null,
+        "url": "test_url3",
+        "requirement": "test_requirement3",
+        "schedule": "test_schedule3",
+        "vac_id": 3
+    },
+    {
+        "name": "test4",
+        "salary": 0.04,
+        "currency": "RUR",
+        "created_at": null,
+        "url": "test_url4",
+        "requirement": "test_requirement4",
+        "schedule": "test_schedule4",
         "vac_id": 4
     },
     {
-        "name": "Шеф-повар",
+        "name": "Middle Backend Developer (Python FastAPI + SQL)",
+        "salary": 210000,
+        "currency": "RUR",
+        "created_at": "2025-02-21T14:46:49+0300",
+        "url": "https://api.hh.ru/vacancies/117570423?host=hh.ru",
+        "requirement": "Написание качественного кода и тестов к нему. Необходимый стек: <highlighttext>Python</highlighttext> (asyncio), чистый SQL (не ORM), FastAPI (весь функционал), микросервисная архитектура...",
+        "schedule": "Удаленная работа",
+        "vac_id": 1
+    },
+    {
+        "name": "Python-разработчик",
+        "salary": 80000,
+        "currency": "RUR",
+        "created_at": "2025-02-21T14:00:01+0300",
+        "url": "https://api.hh.ru/vacancies/116455408?host=hh.ru",
+        "requirement": "От 1 года коммерческой <highlighttext>разработки</highlighttext>. Умение структурно мыслить, а также разбивать проект на подзадачи. Опыт с другими языками программирования, например...",
+        "schedule": "Полный день",
+        "vac_id": 2
+    },
+    {
+        "name": "Генеральный директор (производство премиальных натуральных сыров)",
+        "salary": 500000,
+        "currency": "RUR",
+        "created_at": "2025-02-27T19:50:33+03:00",
+        "url": "https://api.hh.ru/vacancies/117653659?host=hh.ru",
+        "requirement": "Основные цели должности: От 3-5 лет опыта работы в роли коммерческого <highlighttext>директора</highlighttext> в компании по <highlighttext>производству</highlighttext> продуктов питания, либо...",
+        "schedule": "Полный день",
+        "vac_id": 141
+    },
+    {
+        "name": "Исполнительный директор на собственное производство косметики",
         "salary": 350000,
         "currency": "RUR",
-        "created_at": "2025-02-27T16:17:23+03:00",
-        "url": "https://api.hh.ru/vacancies/115152378?host=hh.ru",
-        "requirement": "Опыт работы в известных премиальных, хорошо себя зарекомендовавших ресторанах г. Москвы обязателен. Желателен опыт работы за границей. Опыт управления персоналом. ",
-        "schedule": "Полный день",
-        "vac_id": 7
-    },
-    {
-        "name": "Менеджер по продажам b2b (коммерческий транспорт)",
-        "salary": 280000,
-        "currency": "RUR",
-        "created_at": "2025-02-27T08:37:57+03:00",
-        "url": "https://api.hh.ru/vacancies/117605475?host=hh.ru",
-        "requirement": "Мы изготовляем и продаем грузовые автомобилей любой тоннажности. - Опыт в b2b продажах от 1 года. - Грамотная речь. - ",
-        "schedule": "Полный день",
-        "vac_id": 74
-    },
-    {
-        "name": "Менеджер по логистике (собственный и привлеченный транспорт)",
-        "salary": 250000,
-        "currency": "RUR",
-        "created_at": "2025-02-27T14:05:16+03:00",
-        "url": "https://api.hh.ru/vacancies/117636005?host=hh.ru",
-        "requirement": "Опыт работы не менее года на погрузке собственного парка. Опыт работы в Cargo.run. Умение планировать загрузки т/с. ",
+        "created_at": "2025-03-01T18:11:59+03:00",
+        "url": "https://api.hh.ru/vacancies/116813396?host=hh.ru",
+        "requirement": "Твой опыт и навыки: Опыт работы: исполнительный <highlighttext>директор</highlighttext> на <highlighttext>производстве</highlighttext>, фарм компании или бренд-<highlighttext>директор</highlighttext> с релевантным опытом от 3...",
         "schedule": "Удаленная работа",
-        "vac_id": 52
+        "vac_id": 148
     },
     {
-        "name": "Водитель грузового транспорта категории СЕ",
-        "salary": 240000,
+        "name": "Руководитель проекта - производство базовых масел, изодепарафинизация, гидрофинишинг",
+        "salary": 350000,
         "currency": "RUR",
-        "created_at": "2025-03-01T08:05:41+03:00",
-        "url": "https://api.hh.ru/vacancies/117501121?host=hh.ru",
-        "requirement": "Опыт работы на тралах и полуприцепах. Знание технической части автомобиля. Отсутствие медицинских противопоказаний.",
-        "schedule": "Вахтовый метод",
-        "vac_id": 75
+        "created_at": "2025-02-27T17:17:14+03:00",
+        "url": "https://api.hh.ru/vacancies/117160229?host=hh.ru",
+        "requirement": "Опыт работы не менее 5 лет (желательно более 10 лет) на соответствующей установке, процессе на должности <highlighttext>начальник</highlighttext> или зам. <highlighttext>начальник</highlighttext>...",
+        "schedule": "Полный день",
+        "vac_id": 157
     }
 ]

@@ -24,18 +24,18 @@ class JsonOperator(VacanciesOperator, MixinLogger):
             with open(self.__file_path, 'r+', encoding='utf-8') as file:
                 data = json.load(file)
         except FileNotFoundError:
-            print(f"Файл {self.__file_path} не найден и будет создан заново")
+           self.log_info(f"Файл {self.__file_path} не найден и будет создан заново")
         except json.decoder.JSONDecodeError:  # например, если файл пустой, будет такая ошибка
             print(f"Ошибка получения данных из файла {self.__file_path}")
         else:
             if data:
                 try:
                     for vacancy in data:
-                        if Vacancy(**vacancy) not in self.vacancies_list:
+                        if Vacancy(**vacancy) not in set(self.vacancies_list):
                             self.vacancies_list.append(Vacancy(**vacancy))
                     # return self.vacancies_list
                 except TypeError as e:
-                    print(f"Данные в файле не читаются как вакансии: {e}")
+                    self.log_warning(f"Данные в файле не читаются как вакансии: {e}")
         finally:
             self.log_info(f"в базе вакансий было: {len(self.vacancies_list)}")
             return self.vacancies_list
@@ -51,18 +51,19 @@ class JsonOperator(VacanciesOperator, MixinLogger):
                 with open(self.__file_path, "w+", encoding='utf-8') as file:
                     json.dump(data, file, ensure_ascii=False, indent=4)
             except json.decoder.JSONDecodeError:
-                print("Ошибка, данные не записаны в файл")
+                self.log_warning("Ошибка, данные не записаны в файл")
             except FileNotFoundError:
-                print("Файл не найден")
+                self.log_warning("Файл не найден")
             else:
                 self.log_info(f"в базе вакансий стало: {len(self.vacancies_list)}")
         else:
-            print("Нет данных для записи")
+            self.log_info("Нет данных для записи")
 
     def add_vacancy(self, new_vacancy):
         """ Добавляет объект класса Vacancy  в json-файл"""
+
         with self:
-            if isinstance(new_vacancy, Vacancy) and not new_vacancy in self.vacancies_list:
+            if isinstance(new_vacancy, Vacancy) and not new_vacancy in set(self.vacancies_list):
                 self.vacancies_list.append(new_vacancy)
 
     def get_vacancy(self, vac_id: int) -> None | Vacancy:
@@ -75,7 +76,7 @@ class JsonOperator(VacanciesOperator, MixinLogger):
     def del_vacancy(self, unwanted_vacancy):
         """ Удаляет объект класса Vacancy из json-файла"""
         with self:
-            if unwanted_vacancy in self.vacancies_list:
+            if unwanted_vacancy in set(self.vacancies_list):
                 self.vacancies_list.remove(unwanted_vacancy)
 
     def add_vacancies(self, vacancies: list):
@@ -85,8 +86,9 @@ class JsonOperator(VacanciesOperator, MixinLogger):
                 for vacancy in vacancies:
                     if not isinstance(vacancy, Vacancy):
                         raise TypeError("Внести в базу можно только объект класса Vacancy")
-                    elif vacancy not in self.vacancies_list:
+                    elif vacancy not in set(self.vacancies_list):
                         self.vacancies_list.append(vacancy)
+                print(f"работает add_vacancies, в списке {len(self.vacancies_list)}")
                 return self
 
 
@@ -100,13 +102,13 @@ class JsonOperator(VacanciesOperator, MixinLogger):
             source_keys = ['name', 'salary', 'created_at', 'url', 'requirement', 'schedule']
             # проверка, что ключи запроса есть среди параметров вакансий
             if not all(key in source_keys for key in criteria):
-                print("Некорректные условия, таких параметров нет у вакансий")
+                self.log_warning("Некорректные условия, таких параметров нет у вакансий")
             else:
                 if len(self.vacancies_list) > 0:
                     for key, value in criteria.items():
                         filtered_vacancies = [vacancy for vacancy in self.vacancies_list if
                                               getattr(vacancy, key) == value]
-                print(f"найдено таких вакансий: {len(filtered_vacancies)}")
+                self.log_info(f"найдено вакансий по критериям: {len(filtered_vacancies)}")
                 return filtered_vacancies
 
     def del_vacancies(self, criteria: dict):
@@ -115,7 +117,7 @@ class JsonOperator(VacanciesOperator, MixinLogger):
         if list_to_delete and len(list_to_delete) > 0:
             print(f"Будет удалено вакансий: {len(list_to_delete)}")
             with self:
-                new_list = [vacancy for vacancy in self.vacancies_list if vacancy not in list_to_delete]
+                new_list = [vacancy for vacancy in self.vacancies_list if vacancy not in set(list_to_delete)]
                 self.vacancies_list = new_list
 
 
@@ -171,7 +173,7 @@ if __name__ == "__main__":
 
     vac_list = [vac3, vac4, vac1, vac2]
 
-    operator1.add_vacancies(vac_list[0:3])
+    operator1.add_vacancies(vac_list[2:])
     # operator1.add_vacancies(vac_list1)
     # find_vac = operator1.get_vacancy(3)
     # print(find_vac)

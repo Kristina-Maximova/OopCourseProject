@@ -1,9 +1,10 @@
 import requests
 import json
 from src.abstract_api import ApiExplorer
+from src.mixin_logger import MixinLogger
 
 
-class HH(ApiExplorer):
+class HH(ApiExplorer, MixinLogger):
     """ Класс для работы с API HeadHunter """
 
     def __init__(self):
@@ -19,6 +20,7 @@ class HH(ApiExplorer):
             'page': 0
         }
         self.vacancies = []
+        super().__init__()
 
     # метод должен быть приватным по условию задания.
     # Но при наследовании имя переопределяется, поэтому тут слово с большой буквы
@@ -29,16 +31,17 @@ class HH(ApiExplorer):
             if response.status_code == 200:
                 return True
             else:
-                print(f"Ошибка запроса {response.status_code}")
+                self.log_warning(f"Ошибка запроса {response.status_code}")
                 return False
         except ConnectionError:
-            print("Ошибка соединения с сайтом")
+            self.log_warning("Ошибка соединения с сайтом")
             return False
 
     def get_vacancies(self, key_word: str) -> list:
         """ Метод для получения вакансий с сайта HH.ru"""
         self.__params['text'] = key_word
         if self._ApiExplorer__may_connect():
+            self.log_debug("начат подбор вакансий на hh")
             self.vacancies = []
             while True:
                 response = requests.get(self.__url, headers=self.__headers, params=self.__params)
@@ -49,7 +52,7 @@ class HH(ApiExplorer):
                     break
                 else:
                     self.__params['page'] += 1
-
+            self.log_debug("ответ получен, приводим данные к словарям для вакансий")
             result = []
             for vacancy in self.vacancies:
                 vacancy_data = {
@@ -65,7 +68,7 @@ class HH(ApiExplorer):
 
             print(f"Всего найдено вакансий: {len(result)}")
             return result
-        print("Не удалось получить данные c hh.ru")
+        self.log_warning("Не удалось получить данные c hh.ru")
         return []
 
 
