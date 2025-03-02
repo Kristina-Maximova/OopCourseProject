@@ -12,7 +12,7 @@ class Vacancy(MixinLogger):
     __slots__ = ("name", "salary", "currency", "created_at", "url", "requirement", "schedule", "vac_id",)
 
     # так как в слотах нецелесообразно прописывать ("logger", "filehandler", "file_formatter"),
-    # logger работает только в инициализаторе
+    # logger сработает только в инициализаторе
 
     def __init__(self, name: str, salary: float | None, currency: str, created_at: str | datetime.datetime | None,
                  url: str, requirement: str, schedule: str, vac_id: int = None):
@@ -24,7 +24,6 @@ class Vacancy(MixinLogger):
         self.url = url
         self.requirement = requirement
         self.schedule = schedule
-        self.currency = "RUR"  # в идеале менять в методе is_valid_salary при конвертации, пока так не получилось
         if not vac_id:
             Vacancy.vacancies_counter += 1
         self.vac_id = vac_id if vac_id else Vacancy.vacancies_counter
@@ -96,6 +95,7 @@ class Vacancy(MixinLogger):
             if self.currency == "USD":
                 curs = get_usd_rate()
                 new_value = round(float(value) * curs, 2)
+                self.currency = "RUR"
                 return new_value
             return value
         else:
@@ -171,11 +171,11 @@ if __name__ == "__main__":
 
                       })
     print(vac1)
-    print(vac2.created_at)
-    vac2.to_datetime()
-    print(vac2.created_at, type(vac2.created_at))
-    vac2.to_iso_str()
-    print(vac2.created_at, type(vac2.created_at))
+    print(vac2.salary, vac2.currency)
+    # vac2.to_datetime()
+    # print(vac2.created_at, type(vac2.created_at))
+    # vac2.to_iso_str()
+    # print(vac2.created_at, type(vac2.created_at))
     # hh_obj = HH()
     # data_from_hh = hh_obj.get_vacancies('Python')
     # casted_to_list_vacs = Vacancy.cast_to_object_list(data_from_hh)
