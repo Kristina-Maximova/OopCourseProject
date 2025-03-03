@@ -5,7 +5,6 @@ from src.abstract_operator import VacanciesOperator
 from src.vacancy import Vacancy
 
 
-
 class JsonOperator(VacanciesOperator, MixinLogger):
     """ Класс для сохранения информации о вакансиях в JSON-файл """
 
@@ -24,7 +23,7 @@ class JsonOperator(VacanciesOperator, MixinLogger):
             with open(self.__file_path, 'r+', encoding='utf-8') as file:
                 data = json.load(file)
         except FileNotFoundError:
-           self.log_info(f"Файл {self.__file_path} не найден и будет создан заново")
+            self.log_info(f"Файл {self.__file_path} не найден и будет создан заново")
         except json.decoder.JSONDecodeError:  # например, если файл пустой, будет такая ошибка
             print(f"Ошибка получения данных из файла {self.__file_path}")
         else:
@@ -59,9 +58,20 @@ class JsonOperator(VacanciesOperator, MixinLogger):
         else:
             self.log_info("Нет данных для записи")
 
+    @property
+    def file_path(self):
+        """ Геттер для получения атрибута
+         К атрибуту можно обращаться без ()"""
+        return self.__file_path
+
+    @file_path.setter
+    def file_path(self, new_path: str):
+        """ Сеттер. Метод срабатывает при операции присваивания
+        нового значения у уже созданного объекта """
+        self.__file_path = new_path
+
     def add_vacancy(self, new_vacancy):
         """ Добавляет объект класса Vacancy  в json-файл"""
-
         with self:
             if isinstance(new_vacancy, Vacancy) and not new_vacancy in set(self.vacancies_list):
                 self.vacancies_list.append(new_vacancy)
@@ -91,35 +101,42 @@ class JsonOperator(VacanciesOperator, MixinLogger):
                 print(f"работает add_vacancies, в списке {len(self.vacancies_list)}")
                 return self
 
-
     def get_vacancies(self, criteria: dict) -> list | None:
         """ Метод для получения из json-файла вакансий с заданными критериями
          criteria: параметр и его значение у вакансий, которые надо получить.
          Возвращает список вакансий, соответствующий критериям
          """
-        with self:
-            filtered_vacancies = []
-            source_keys = ['name', 'salary', 'created_at', 'url', 'requirement', 'schedule']
-            # проверка, что ключи запроса есть среди параметров вакансий
-            if not all(key in source_keys for key in criteria):
-                self.log_warning("Некорректные условия, таких параметров нет у вакансий")
-            else:
+        if self.is_valid_criteria(criteria):
+            with self:
+                filtered_vacancies = []
                 if len(self.vacancies_list) > 0:
                     for key, value in criteria.items():
                         filtered_vacancies = [vacancy for vacancy in self.vacancies_list if
                                               getattr(vacancy, key) == value]
                 self.log_info(f"найдено вакансий по критериям: {len(filtered_vacancies)}")
                 return filtered_vacancies
+        return []
 
     def del_vacancies(self, criteria: dict):
         """ Метод для удаления нескольких вакансий из json-файла """
-        list_to_delete = self.get_vacancies(criteria)
-        if list_to_delete and len(list_to_delete) > 0:
-            print(f"Будет удалено вакансий: {len(list_to_delete)}")
+        if self.is_valid_criteria(criteria):
             with self:
-                new_list = [vacancy for vacancy in self.vacancies_list if vacancy not in set(list_to_delete)]
-                self.vacancies_list = new_list
+                list_to_delete = []
+                if len(self.vacancies_list) > 0:
+                    for key, value in criteria.items():
+                        list_to_delete = [vacancy for vacancy in self.vacancies_list if
+                                          getattr(vacancy, key) == value]
+                    if list_to_delete and len(list_to_delete) > 0:
+                        print(f"Будет удалено вакансий: {len(list_to_delete)}")
+                        new_list = [vacancy for vacancy in self.vacancies_list if vacancy not in set(list_to_delete)]
+                        self.vacancies_list = new_list
 
+        # list_to_delete = self.get_vacancies(criteria)
+        # if list_to_delete and len(list_to_delete) > 0:
+        #     print(f"Будет удалено вакансий: {len(list_to_delete)}")
+        #     with self:
+        #         new_list = [vacancy for vacancy in self.vacancies_list if vacancy not in set(list_to_delete)]
+        #         self.vacancies_list = new_list
 
     @staticmethod
     def _get_file_name(source_name):
@@ -127,6 +144,19 @@ class JsonOperator(VacanciesOperator, MixinLogger):
         project_root = os.path.dirname(os.path.abspath(__file__))
         path_to_file = os.path.join(project_root, "..", "data", file_name)
         return path_to_file
+
+    def is_valid_criteria(self, criteria: dict) -> bool:
+        """ метод проверки корректности критериев для получения и удаления вакансий"""
+        source_keys = ['name', 'salary', 'created_at', 'url', 'requirement', 'schedule']
+        # проверка, что ключи запроса есть среди параметров вакансий
+        if criteria and isinstance(criteria, dict):
+            if not all(key in source_keys for key in criteria):
+                self.log_warning("Некорректные условия, таких параметров нет у вакансий")
+                return False
+            else:
+                return True
+        else:
+            return False
 
 
 if __name__ == "__main__":
@@ -173,10 +203,12 @@ if __name__ == "__main__":
 
     vac_list = [vac3, vac4, vac1, vac2]
 
-    operator1.add_vacancies(vac_list[2:])
+    # operator1.add_vacancies(vac_list[2:])
     # operator1.add_vacancies(vac_list1)
     # find_vac = operator1.get_vacancy(3)
     # print(find_vac)
 
     print(f"вакансий в списке объекта: {len(operator1.vacancies_list)}")
     criteria1 = {'salary': 0.03}
+    operator1.del_vacancies({"schedule": "Удаленная работа"})
+

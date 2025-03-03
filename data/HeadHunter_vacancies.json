@@ -20,16 +20,6 @@
         "vac_id": 4
     },
     {
-        "name": "Middle Backend Developer (Python FastAPI + SQL)",
-        "salary": 210000,
-        "currency": "RUR",
-        "created_at": "2025-02-21T14:46:49+0300",
-        "url": "https://api.hh.ru/vacancies/117570423?host=hh.ru",
-        "requirement": "Написание качественного кода и тестов к нему. Необходимый стек: <highlighttext>Python</highlighttext> (asyncio), чистый SQL (не ORM), FastAPI (весь функционал), микросервисная архитектура...",
-        "schedule": "Удаленная работа",
-        "vac_id": 1
-    },
-    {
         "name": "Python-разработчик",
         "salary": 80000,
         "currency": "RUR",
@@ -48,16 +38,6 @@
         "requirement": "Основные цели должности: От 3-5 лет опыта работы в роли коммерческого <highlighttext>директора</highlighttext> в компании по <highlighttext>производству</highlighttext> продуктов питания, либо...",
         "schedule": "Полный день",
         "vac_id": 141
-    },
-    {
-        "name": "Исполнительный директор на собственное производство косметики",
-        "salary": 350000,
-        "currency": "RUR",
-        "created_at": "2025-03-01T18:11:59+03:00",
-        "url": "https://api.hh.ru/vacancies/116813396?host=hh.ru",
-        "requirement": "Твой опыт и навыки: Опыт работы: исполнительный <highlighttext>директор</highlighttext> на <highlighttext>производстве</highlighttext>, фарм компании или бренд-<highlighttext>директор</highlighttext> с релевантным опытом от 3...",
-        "schedule": "Удаленная работа",
-        "vac_id": 148
     },
     {
         "name": "Руководитель проекта - производство базовых масел, изодепарафинизация, гидрофинишинг",

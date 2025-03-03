@@ -1,8 +1,6 @@
 from unittest.mock import patch
-
 import pytest
 from datetime import datetime
-
 from src.vacancy import Vacancy
 
 

@@ -2,6 +2,7 @@ import pytest
 from src.vacancy import Vacancy
 
 
+
 @pytest.fixture
 def test_vacancy1():
     return Vacancy(**{'name': 'Middle Backend Developer (Python FastAPI + SQL)',
@@ -64,3 +65,10 @@ def test_dict_vacancy2():
                       'schedule': 'Полный день',
                       'vac_id': 801
                       }
+
+@pytest.fixture
+def test_init_data_for_operator(test_vacancy1, test_vacancy2):
+    return {"source_name": "HeadHunter",
+            "source_url" : "https://hh.ru",
+            "vacancies_list": [test_vacancy1, test_vacancy2],
+            "file_path": "fake/file_path"}
