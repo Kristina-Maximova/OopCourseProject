@@ -98,7 +98,7 @@ class JsonOperator(VacanciesOperator, MixinLogger):
                         raise TypeError("Внести в базу можно только объект класса Vacancy")
                     elif vacancy not in set(self.vacancies_list):
                         self.vacancies_list.append(vacancy)
-                print(f"работает add_vacancies, в списке {len(self.vacancies_list)}")
+                self.log_debug(f"работает add_vacancies, в списке {len(self.vacancies_list)}")
                 return self
 
     def get_vacancies(self, criteria: dict) -> list | None:
@@ -130,13 +130,6 @@ class JsonOperator(VacanciesOperator, MixinLogger):
                         print(f"Будет удалено вакансий: {len(list_to_delete)}")
                         new_list = [vacancy for vacancy in self.vacancies_list if vacancy not in set(list_to_delete)]
                         self.vacancies_list = new_list
-
-        # list_to_delete = self.get_vacancies(criteria)
-        # if list_to_delete and len(list_to_delete) > 0:
-        #     print(f"Будет удалено вакансий: {len(list_to_delete)}")
-        #     with self:
-        #         new_list = [vacancy for vacancy in self.vacancies_list if vacancy not in set(list_to_delete)]
-        #         self.vacancies_list = new_list
 
     @staticmethod
     def _get_file_name(source_name):
@@ -211,4 +204,3 @@ if __name__ == "__main__":
     print(f"вакансий в списке объекта: {len(operator1.vacancies_list)}")
     criteria1 = {'salary': 0.03}
     operator1.del_vacancies({"schedule": "Удаленная работа"})
-

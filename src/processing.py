@@ -8,15 +8,13 @@ from datetime import timezone
 class SalaryAnalyzer(VacanciesProcessing, MixinLogger):
     """ Класс для обработки данных с вакансиями по зарплатe """
 
-    def __init__(self, vacancies: list, lower_limit: float = 0.0):
+    def __init__(self, vacancies: list):
         """
         Конструктор класса для обработки данных по зарплате
         :param vacancies: список объектов класса Vacancy
-        :param lower_limit: число, нижняя граница при фильтрации
         """
         super().__init__(vacancies)
         self.vacancies = self.sort_vacancies()
-        self.lower_limit = lower_limit
 
     def sort_vacancies(self):
         """ Метод для сортировки списка объектов класса Vакансии по зарплате"""
@@ -45,7 +43,6 @@ class DateAnalyzer(VacanciesProcessing, MixinLogger):
         """
         super().__init__(vacancies)
         self.vacancies_no_date = []
-
 
     def __enter__(self):
         """ Метод для приведения аргумента вакансий created_at к типу datetime
@@ -141,25 +138,22 @@ if __name__ == "__main__":
                       'schedule': "test_schedule4",
                       })
     my_list = [vac1, vac2, vac3, vac4]
-    for vac in my_list:
-        print(vac)
 
     # печать линии в консоли:
     print('-' * 200)
 
-    # analyzer1 = SalaryAnalyzer(my_list)
-    # my_list1 = analyzer1.vacancies
-    # for vac in my_list1:
-    #     print(vac)
-    # print('-' * 200)
-    analyser2 = DateAnalyzer(my_list)
-    my_list2 = analyser2.sort_vacancies()
+    analyzer1 = SalaryAnalyzer(my_list)
+    my_list1 = analyzer1.filter_vacancies(2100)
+    for vac in my_list1:
+        print(vac)
+    print('-' * 200)
+    # analyser2 = DateAnalyzer(my_list)
+    # my_list2 = analyser2.sort_vacancies()
     # for vac in my_list2:
     #     print(vac, vac.created_at, type(vac.created_at))
 
-
-    filtered_by_date_list = analyser2.filter_vacancies("21.02.25")
-
-    for vac in filtered_by_date_list:
-        print(vac, vac.created_at)
-    print('-' * 200)
+    # filtered_by_date_list = analyser2.filter_vacancies("21.02.25")
+    #
+    # for vac in filtered_by_date_list:
+    #     print(vac, vac.created_at)
+    # print('-' * 200)

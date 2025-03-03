@@ -8,6 +8,7 @@ class HH(ApiExplorer, MixinLogger):
     """ Класс для работы с API HeadHunter """
 
     def __init__(self):
+        """ Конструктор класса для работы с API HeadHunter"""
         self.__url = 'https://api.hh.ru/vacancies'
         self.__headers = {'HH-User-Agent': f'OopCourseProject (e-mail)'}
         self.__params = {
@@ -21,6 +22,21 @@ class HH(ApiExplorer, MixinLogger):
         }
         self.vacancies = []
         super().__init__()
+
+    @property
+    def url(self):  # геттер
+        """ Геттер для параметра url"""
+        return self.__url
+
+    @property
+    def headers(self):  # геттер
+        """ Геттер для параметра headers"""
+        return self.__headers
+
+    @property
+    def params(self):  # геттер
+        """ Геттер для параметра params"""
+        return self.__params
 
     # метод должен быть приватным по условию задания.
     # Но при наследовании имя переопределяется, поэтому тут слово с большой буквы
@@ -75,4 +91,4 @@ class HH(ApiExplorer, MixinLogger):
 if __name__ == "__main__":
     hh_obj = HH()
     vac1 = hh_obj.get_vacancies("Python")
-    print(vac1)
+

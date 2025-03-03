@@ -48,5 +48,35 @@
         "requirement": "Опыт работы не менее 5 лет (желательно более 10 лет) на соответствующей установке, процессе на должности <highlighttext>начальник</highlighttext> или зам. <highlighttext>начальник</highlighttext>...",
         "schedule": "Полный день",
         "vac_id": 157
+    },
+    {
+        "name": "Backend-разработчик (Python) с опытом во Frontend (React)",
+        "salary": 300000,
+        "currency": "RUR",
+        "created_at": "2025-03-01T11:31:17+03:00",
+        "url": "https://api.hh.ru/vacancies/117342329?host=hh.ru",
+        "requirement": "Опыт Backend-разработки на <highlighttext>Python</highlighttext> от 2 лет. Глубокие знания фреймворка Django. Опыт Frontend-разработки на React.js (уровень взаимодействия с...",
+        "schedule": "Удаленная работа",
+        "vac_id": 36
+    },
+    {
+        "name": "Fullstack developer (Python)",
+        "salary": 300000,
+        "currency": "RUR",
+        "created_at": "2025-03-03T11:32:15+03:00",
+        "url": "https://api.hh.ru/vacancies/117468876?host=hh.ru",
+        "requirement": "Отличное владение каким-либо backend-стеком технологий (<highlighttext>Python</highlighttext>, Java, Go и т.п.). Достаточное :) владение react. Готовность освоить наш стек...",
+        "schedule": "Удаленная работа",
+        "vac_id": 56
+    },
+    {
+        "name": "Data Engineer Python + Spark / Инженер по обработке данных",
+        "salary": 280000,
+        "currency": "RUR",
+        "created_at": "2025-02-25T16:16:14+03:00",
+        "url": "https://api.hh.ru/vacancies/107663270?host=hh.ru",
+        "requirement": "Опыт коммерческой разработки на <highlighttext>Python</highlighttext> от 3х лет. Сильные софт скиллы и умение коммуницировать между командами. Знакомство с основным...",
+        "schedule": "Удаленная работа",
+        "vac_id": 38
     }
 ]
