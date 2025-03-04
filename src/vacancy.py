@@ -12,7 +12,7 @@ class Vacancy(MixinLogger):
     # так как в слотах нецелесообразно прописывать ("logger", "filehandler", "file_formatter"),
     # logger сработает только в инициализаторе
     def __init__(self, name: str, salary: float | None, currency: str, created_at: str | datetime.datetime | None,
-                 url: str, requirement: str, schedule: str, vac_id: int = None):
+                 url: str, requirement: str, schedule: str, vac_id: int = None) -> None:
         """ Конструктор класса вакансия для создания объектов"""
         self.name = name
         self.currency = currency
@@ -63,11 +63,11 @@ class Vacancy(MixinLogger):
 
     # так как методы сравнения определены по аргументу зарплата,
     # и нужна будет проверка на уникальность, то определяем метод для использования c set()
-    def __hash__(self):
+    def __hash__(self) -> int:
         return hash((self.vac_id, self.name, self.requirement))
 
     @property
-    def to_dict(self):  # с декоратором вызов без круглых скобок
+    def to_dict(self) -> dict | None:  # с декоратором вызов без круглых скобок
         return {"name": self.name,
                 "salary": self.salary,
                 "currency": self.currency,
@@ -78,7 +78,7 @@ class Vacancy(MixinLogger):
                 "vac_id": self.vac_id}
 
     @staticmethod
-    def _get_compared_operand(other) -> int | float | None:
+    def _get_compared_operand(other: Any) -> int | float | None:
         """ Получение и валидация сравниваемого значения в операторах сравнения"""
         if not isinstance(other, (int, float, Vacancy)):
             raise TypeError("Сравнение возможно только с объектом класса Vacancy или с числом")

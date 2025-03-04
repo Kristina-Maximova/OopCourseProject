@@ -1,7 +1,7 @@
 from datetime import datetime
 
 
-def user_interaction():
+def user_interaction() -> dict | None:
     """ Функция взаимодействия с пользователем"""
 
     while True:
@@ -33,7 +33,7 @@ def user_interaction():
         break
 
 
-def is_valid_words(user_keywords):
+def is_valid_words(user_keywords: str) -> bool:
     """ проверка, что строка содержит хотя бы одно слово"""
     check = list(word for word in user_keywords.split() if word.isalpha())
     if len(check) > 0:
@@ -41,7 +41,7 @@ def is_valid_words(user_keywords):
     return False
 
 
-def is_valid_top_n(user_top_n):
+def is_valid_top_n(user_top_n: str) -> bool:
     """проверка, что введено число"""
     try:
         int(user_top_n)
@@ -50,7 +50,7 @@ def is_valid_top_n(user_top_n):
         return False
 
 
-def is_valid_date_from(user_date_from):
+def is_valid_date_from(user_date_from: str) -> bool:
     """ Проверка, что введена дата в указанном формате,
      и что она не больше текущей даты"""
     try:

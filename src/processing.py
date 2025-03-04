@@ -24,7 +24,7 @@ class SalaryAnalyzer(VacanciesProcessing, MixinLogger):
             return sorted(self.vacancies, key=lambda x: x.salary, reverse=True)
         return self.vacancies
 
-    def filter_vacancies(self, lower_limit):
+    def filter_vacancies(self, lower_limit: float | int):
         """ Метод получения списка объектов класса Vacancy
         с зарплатой выше определенного лимита"""
         self.log_debug("начата фильтрация по зарплате")
@@ -75,7 +75,7 @@ class DateAnalyzer(VacanciesProcessing, MixinLogger):
             return self.vacancies
         return self.vacancies
 
-    def sort_vacancies(self):
+    def sort_vacancies(self) -> list | None:
         """ Метод для сортировки вакансий по дате создания.
         в начале списка будут последние по дате.
         """
@@ -85,7 +85,7 @@ class DateAnalyzer(VacanciesProcessing, MixinLogger):
                 self.vacancies = sorted(self.vacancies, key=lambda x: x.created_at, reverse=True)
         return self.vacancies
 
-    def filter_vacancies(self, date_from):
+    def filter_vacancies(self, date_from: str) -> list | None:
         """ Метод для фильтрации вакансий"""
         if len(self.vacancies) > 0:
             try:

@@ -130,10 +130,11 @@ class JsonOperator(VacanciesOperator, MixinLogger):
                     if list_to_delete and len(list_to_delete) > 0:
                         print(f"Будет удалено вакансий: {len(list_to_delete)}")
                         new_list = [vacancy for vacancy in self.vacancies_list if vacancy not in set(list_to_delete)]
+
                         self.vacancies_list = new_list
 
     @staticmethod
-    def _get_file_name(source_name):
+    def _get_file_name(source_name: str):
         file_name = f"{source_name.replace(' ', '_')}_vacancies.json"
         project_root = os.path.dirname(os.path.abspath(__file__))
         path_to_file = os.path.join(project_root, "..", "data", file_name)

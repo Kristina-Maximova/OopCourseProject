@@ -1,9 +1,11 @@
+from typing import Any
+
 import requests
 
 url = "https://www.cbr-xml-daily.ru/daily_json.js"
 
 
-def get_usd_rate() -> float | None:
+def get_usd_rate() -> float | None | Any:
     """ Получение актуального на момент запроса курса доллара с сайта ЦБ РФ"""
     try:
         response = requests.get(url)
