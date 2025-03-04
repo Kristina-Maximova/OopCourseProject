@@ -1,4 +1,5 @@
 import pytest
+
 from src.vacancy import Vacancy
 
 
@@ -36,7 +37,9 @@ def test_vacancy3():
         "currency": "RUR",
         "created_at": "2025-03-03T11:32:15+03:00",
         "url": "https://api.hh.ru/vacancies/117468876?host=hh.ru",
-        "requirement": "Отличное владение каким-либо backend-стеком технологий (<highlighttext>Python</highlighttext>, Java, Go и т.п.). Достаточное :) владение react. Готовность освоить наш стек...",
+        "requirement": "Отличное владение каким-либо backend-стеком технологий"
+                       " (<highlighttext>Python</highlighttext>, Java, Go и т.п.)."
+                       " Достаточное :) владение react. Готовность освоить наш стек...",
         "schedule": "Удаленная работа",
         "vac_id": 56
     })
@@ -100,15 +103,16 @@ def hh_response():
                        'employer': {'id': '5155838', 'name': 'Андреев Артём Александрович',
                                     'url': 'https://api.hh.ru/employers/5155838',
                                     'alternate_url': 'https://hh.ru/employer/5155838',
-                                    'logo_urls': {'240': 'https://img.hhcdn.ru/employer-logo/6705035.png',
-                                                  'original': 'https://img.hhcdn.ru/employer-logo-original/1271181.png',
-                                                  '90': 'https://img.hhcdn.ru/employer-logo/6705034.png'},
                                     'vacancies_url': 'https://api.hh.ru/vacancies?employer_id=5155838',
                                     'accredited_it_employer': False,
                                     'trusted': True},
                        'snippet': {
-                           'requirement': 'Умение работать по Scrum, работа в таск-трекере. Навыки написания тестов. <highlighttext>Python</highlighttext> 3.11. Asyncio. FastApi (Pydantic v2). MongoDB. ',
-                           'responsibility': 'Разработка нового функционала совместно с командой. Поддержка кодовой базы в актуальном состоянии. Участие в Code Review. Исправление багов.'},
+                           'requirement': 'Умение работать по Scrum, работа в таск-трекере.'
+                                          ' Навыки написания тестов. <highlighttext>Python</highlighttext> 3.11.'
+                                          ' Asyncio. FastApi (Pydantic v2). MongoDB. ',
+                           'responsibility': 'Разработка нового функционала совместно с командой. '
+                                             'Поддержка кодовой базы в актуальном состоянии. '
+                                             'Участие в Code Review. Исправление багов.'},
                        'contacts': None,
                        'schedule': {'id': 'remote', 'name': 'Удаленная работа'}
                        }

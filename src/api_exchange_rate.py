@@ -1,7 +1,7 @@
 import requests
 
-
 url = "https://www.cbr-xml-daily.ru/daily_json.js"
+
 
 def get_usd_rate() -> float | None:
     """ Получение актуального на момент запроса курса доллара с сайта ЦБ РФ"""
@@ -19,6 +19,6 @@ def get_usd_rate() -> float | None:
         return None
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     curs = get_usd_rate()
     print(curs)

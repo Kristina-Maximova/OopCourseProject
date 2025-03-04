@@ -1,13 +1,14 @@
-from src.user_survey import user_interaction
 from src.api_guide import HH
-from src.vacancy import Vacancy
-from src.processing import SalaryAnalyzer, DateAnalyzer
+from src.processing import DateAnalyzer, SalaryAnalyzer
+from src.user_survey import user_interaction
 from src.vac_operator import JsonOperator
+from src.vacancy import Vacancy
+
 
 def main():
     # Получаем пользовательские настройки. В запросе ожидается слово 'вакансия' или 'работа'
     try:
-        user_settings = user_interaction()   # {'keywords': 'python', 'top_n': 3, 'date_from': '28.02.25'}
+        user_settings = user_interaction()  # {'keywords': 'python', 'top_n': 3, 'date_from': '28.02.25'}
         keywords = user_settings.get('keywords')
     except AttributeError:
         return None
@@ -41,7 +42,5 @@ def main():
         print("Вакансии из топ списка внесены в базу")
 
 
-
 if __name__ == "__main__":
     main()
-

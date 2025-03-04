@@ -1,8 +1,9 @@
+import datetime
+from datetime import timezone
+
 from src.abstract_processing import VacanciesProcessing
 from src.mixin_logger import MixinLogger
 from src.vacancy import Vacancy
-import datetime
-from datetime import timezone
 
 
 class SalaryAnalyzer(VacanciesProcessing, MixinLogger):
@@ -100,7 +101,7 @@ class DateAnalyzer(VacanciesProcessing, MixinLogger):
                 return self.vacancies
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     vac1 = Vacancy(**{'name': 'Middle Backend Developer (Python FastAPI + SQL)',
                       'salary': 21,
                       'currency': "RUR",

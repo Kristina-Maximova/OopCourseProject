@@ -1,13 +1,14 @@
-from src.api_guide import HH
 from unittest.mock import patch
+
+from src.api_guide import HH
 
 
 def test_hh_init():
     """ Проверка работы конструктора класса"""
     hh_guide = HH()
     assert hh_guide.url == 'https://api.hh.ru/vacancies'
-    assert hh_guide.headers == {'HH-User-Agent': f'OopCourseProject (e-mail)'}
-    assert hh_guide.params['only_with_salary'] == True
+    assert hh_guide.headers == {'HH-User-Agent': 'OopCourseProject (e-mail)'}
+    assert hh_guide.params['only_with_salary'] is True
 
 
 @patch("requests.get")
@@ -15,14 +16,14 @@ def test_may_connect(mock_get):
     """ Проверка работы метода may_connect при успешном соединении  """
     hh_guide = HH()
     mock_get.return_value.status_code = 200
-    assert hh_guide._ApiExplorer__may_connect() == True
+    assert hh_guide._ApiExplorer__may_connect() is True
 
 
 @patch("requests.get")
 def test_no_may_connect(mock_get):
     hh_guide = HH()
     mock_get.return_value.status_code = 400
-    assert hh_guide._ApiExplorer__may_connect() == False
+    assert hh_guide._ApiExplorer__may_connect() is False
 
 
 @patch("requests.get")

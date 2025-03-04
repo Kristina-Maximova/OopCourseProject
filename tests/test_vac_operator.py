@@ -1,7 +1,6 @@
-import unittest
-from unittest.mock import mock_open, patch, MagicMock
-from src.vac_operator import JsonOperator
 import json
+from unittest.mock import mock_open, patch
+from src.vac_operator import JsonOperator
 
 
 def test_operator_init(test_init_data_for_operator, test_vacancy1, test_vacancy2):

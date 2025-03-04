@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+
 class ApiExplorer(ABC):
     """ Абстрактный класс для работы со сторонними сервисами через API"""
 

@@ -1,7 +1,8 @@
 import json
 import os
-from src.mixin_logger import MixinLogger
+
 from src.abstract_operator import VacanciesOperator
+from src.mixin_logger import MixinLogger
 from src.vacancy import Vacancy
 
 
@@ -73,7 +74,7 @@ class JsonOperator(VacanciesOperator, MixinLogger):
     def add_vacancy(self, new_vacancy):
         """ Добавляет объект класса Vacancy  в json-файл"""
         with self:
-            if isinstance(new_vacancy, Vacancy) and not new_vacancy in set(self.vacancies_list):
+            if isinstance(new_vacancy, Vacancy) and new_vacancy not in set(self.vacancies_list):
                 self.vacancies_list.append(new_vacancy)
 
     def get_vacancy(self, vac_id: int) -> None | Vacancy:
@@ -152,7 +153,7 @@ class JsonOperator(VacanciesOperator, MixinLogger):
             return False
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     vac1 = Vacancy(**{'name': 'Middle Backend Developer (Python FastAPI + SQL)',
                       'salary': 210000,
                       'currency': "RUR",

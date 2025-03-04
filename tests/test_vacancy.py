@@ -1,6 +1,8 @@
-from unittest.mock import patch
-import pytest
 from datetime import datetime
+from unittest.mock import patch
+
+import pytest
+
 from src.vacancy import Vacancy
 
 
@@ -98,6 +100,6 @@ def test_cast_to_object_list(test_dict_vacancy1,
 def test_date_converting(test_vacancy1):
     """ Проверка методов преобразования параметра created_at"""
     test_vacancy1.to_datetime()
-    assert type(test_vacancy1.created_at) == datetime
+    assert type(test_vacancy1.created_at) is datetime
     test_vacancy1.to_iso_str()
     assert test_vacancy1.created_at == '2025-02-21T14:46:49+03:00'

@@ -1,5 +1,5 @@
 import requests
-import json
+
 from src.abstract_api import ApiExplorer
 from src.mixin_logger import MixinLogger
 
@@ -10,12 +10,12 @@ class HH(ApiExplorer, MixinLogger):
     def __init__(self):
         """ Конструктор класса для работы с API HeadHunter"""
         self.__url = 'https://api.hh.ru/vacancies'
-        self.__headers = {'HH-User-Agent': f'OopCourseProject (e-mail)'}
+        self.__headers = {'HH-User-Agent': 'OopCourseProject (e-mail)'}
         self.__params = {
             'text': '',
             'search_field': 'name',
             'area': 1,
-            'period': 7,    # получим данные за последние 7 дней
+            'period': 7,  # получим данные за последние 7 дней
             'only_with_salary': True,
             'per_page': 100,
             'page': 0
@@ -88,7 +88,7 @@ class HH(ApiExplorer, MixinLogger):
         return []
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     hh_obj = HH()
     vac1 = hh_obj.get_vacancies("Python")
-
+    print(vac1[0])

@@ -3,7 +3,7 @@ from datetime import datetime
 
 def user_interaction():
     """ Функция взаимодействия с пользователем"""
-    platforms = ["HeadHunter"]
+
     while True:
         # получаем запрос на поиск вакансий
         words_to_start_searching = ["вакансии", "вакансия", "вакансию", "работа", "работу"]
@@ -63,6 +63,6 @@ def is_valid_date_from(user_date_from):
         return False
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     my_result = user_interaction()
     print(my_result)  # {'keywords': 'python', 'top_n': 3, 'date_from': '28.02.25'}

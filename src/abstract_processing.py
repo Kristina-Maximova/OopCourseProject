@@ -7,7 +7,7 @@ class VacanciesProcessing(ABC):
     @abstractmethod
     def __init__(self, vacancies: list, *args, **kwargs):
         """ обязывает в конструкторе иметь аргументом лист с вакансиями"""
-        self.vacancies = vacancies  if vacancies else []
+        self.vacancies = vacancies if vacancies else []
         super().__init__()
         pass
 
@@ -20,4 +20,3 @@ class VacanciesProcessing(ABC):
     def filter_vacancies(self, *args, **kwargs):
         """ обязывает определять метод фильтрации данных в дочерних классах"""
         pass
-

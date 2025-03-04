@@ -1,4 +1,5 @@
-from src.processing import SalaryAnalyzer, DateAnalyzer
+from src.processing import DateAnalyzer, SalaryAnalyzer
+
 
 def test_salary_processing(test_vacancy1, test_vacancy2, test_vacancy3):
     """ Проверка работы методов сортировки и фильтрации класса SalaryAnalyzer"""

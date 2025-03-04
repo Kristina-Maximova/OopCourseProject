@@ -1,9 +1,7 @@
-from typing import Any
-
-from src.api_exchange_rate import get_usd_rate
-from src.api_guide import HH
-from src.mixin_logger import MixinLogger
 import datetime
+from typing import Any
+from src.api_exchange_rate import get_usd_rate
+from src.mixin_logger import MixinLogger
 
 
 class Vacancy(MixinLogger):
@@ -13,7 +11,6 @@ class Vacancy(MixinLogger):
 
     # так как в слотах нецелесообразно прописывать ("logger", "filehandler", "file_formatter"),
     # logger сработает только в инициализаторе
-
     def __init__(self, name: str, salary: float | None, currency: str, created_at: str | datetime.datetime | None,
                  url: str, requirement: str, schedule: str, vac_id: int = None):
         """ Конструктор класса вакансия для создания объектов"""
@@ -147,7 +144,7 @@ class Vacancy(MixinLogger):
         return self
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     vac1 = Vacancy(**{'name': 'Middle Backend Developer (Python FastAPI + SQL)',
                       'salary': 210000,
                       'currency': 'RUR',
@@ -176,8 +173,3 @@ if __name__ == "__main__":
     # print(vac2.created_at, type(vac2.created_at))
     # vac2.to_iso_str()
     # print(vac2.created_at, type(vac2.created_at))
-    # hh_obj = HH()
-    # data_from_hh = hh_obj.get_vacancies('Python')
-    # casted_to_list_vacs = Vacancy.cast_to_object_list(data_from_hh)
-    # for elem in casted_to_list_vacs[0:3]:
-    #     print(elem)

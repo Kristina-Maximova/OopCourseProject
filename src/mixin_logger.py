@@ -1,11 +1,12 @@
 import logging
 
+
 class MixinLogger:
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.DEBUG)
-        self.filehandler = logging.FileHandler("..\\logs\\my_log_mixin.log","w", encoding="utf-8")
+        self.filehandler = logging.FileHandler("..\\logs\\my_log_mixin.log", "w", encoding="utf-8")
         self.file_formatter = logging.Formatter('%(asctime)s %(levelname)s %(filename)s %(funcName)s:%(message)s')
         self.filehandler.setFormatter(self.file_formatter)
         self.logger.addHandler(self.filehandler)
