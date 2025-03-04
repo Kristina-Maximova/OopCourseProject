@@ -5,7 +5,7 @@ from src.vac_operator import JsonOperator
 from src.vacancy import Vacancy
 
 
-def main():
+def main() -> None:
     # Получаем пользовательские настройки. В запросе ожидается слово 'вакансия' или 'работа'
     try:
         user_settings = user_interaction()  # {'keywords': 'python', 'top_n': 3, 'date_from': '28.02.25'}
@@ -19,7 +19,7 @@ def main():
     hh_searcher = HH()
     data_from_hh = hh_searcher.get_vacancies(keywords)
 
-    # cоздание объектов Vacancy из данных
+    # Создание объектов Vacancy из данных
     user_vacancies = Vacancy.cast_to_object_list(data_from_hh)
 
     # фильтруем полученные данные по дате создания и сортируем по зарплате

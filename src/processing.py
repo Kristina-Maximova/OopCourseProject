@@ -17,20 +17,21 @@ class SalaryAnalyzer(VacanciesProcessing, MixinLogger):
         super().__init__(vacancies)
         self.vacancies = self.sort_vacancies()
 
-    def sort_vacancies(self):
+    def sort_vacancies(self) -> list:
         """ Метод для сортировки списка объектов класса Vакансии по зарплате"""
         self.log_debug("начата сортировка по зарплате")
         if len(self.vacancies) > 0:
             return sorted(self.vacancies, key=lambda x: x.salary, reverse=True)
         return self.vacancies
 
-    def filter_vacancies(self, lower_limit: float | int):
+    def filter_vacancies(self, lower_limit: float | int) -> list :
         """ Метод получения списка объектов класса Vacancy
         с зарплатой выше определенного лимита"""
         self.log_debug("начата фильтрация по зарплате")
         if len(self.vacancies) > 0:
             filtered_list = list(vacancy for vacancy in self.vacancies if vacancy >= lower_limit)
             return filtered_list if filtered_list else []
+        return []
 
 
 class DateAnalyzer(VacanciesProcessing, MixinLogger):
@@ -43,7 +44,7 @@ class DateAnalyzer(VacanciesProcessing, MixinLogger):
         :param date_from: строка с датой в формате ДД.MM.ГГ
         """
         super().__init__(vacancies)
-        self.vacancies_no_date = []
+        self.vacancies_no_date: list = []
 
     def __enter__(self):
         """ Метод для приведения аргумента вакансий created_at к типу datetime
@@ -99,6 +100,7 @@ class DateAnalyzer(VacanciesProcessing, MixinLogger):
             except Exception as e:
                 self.log_warning(f"Фильтрация по дате  не проведена, ошибка: {e}")
                 return self.vacancies
+        return []
 
 
 if __name__ == "__main__":  # pragma: no cover
@@ -148,8 +150,8 @@ if __name__ == "__main__":  # pragma: no cover
     for vac in my_list1:
         print(vac)
     print('-' * 200)
-    # analyser2 = DateAnalyzer(my_list)
-    # my_list2 = analyser2.sort_vacancies()
+    analyser2 = DateAnalyzer(my_list)
+    my_list2 = analyser2.sort_vacancies()
     # for vac in my_list2:
     #     print(vac, vac.created_at, type(vac.created_at))
 

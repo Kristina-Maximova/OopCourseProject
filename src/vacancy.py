@@ -12,7 +12,7 @@ class Vacancy(MixinLogger):
     # так как в слотах нецелесообразно прописывать ("logger", "filehandler", "file_formatter"),
     # logger сработает только в инициализаторе
     def __init__(self, name: str, salary: float | None, currency: str, created_at: str | datetime.datetime | None,
-                 url: str, requirement: str, schedule: str, vac_id: int = None) -> None:
+                 url: str, requirement: str, schedule: str, vac_id: int | Any = None) -> None:
         """ Конструктор класса вакансия для создания объектов"""
         self.name = name
         self.currency = currency
