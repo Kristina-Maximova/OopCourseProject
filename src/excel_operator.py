@@ -86,6 +86,12 @@ class ExcelOperator(VacanciesOperator):
         # Сохраняем файл
         wb.save(self.__file_path)
 
+    @property
+    def file_path(self):
+        """ Геттер для получения атрибута
+         К атрибуту можно обращаться без ()"""
+        return self.__file_path
+
     def add_vacancies(self, vacs_list):
         with self:  # тут работают __enter__ и __exit__
             if vacs_list:
@@ -152,9 +158,9 @@ if __name__ == "__main__":  # pragma: no cover
                       })
 
     vac_list1 = [vac1, vac2, vac3]
-    vac_list_dict = [vac.to_dict for vac in vac_list1]
+    vac_list_dict1 = [vac.to_dict for vac in vac_list1]
     excel_operator1 = ExcelOperator("HeadHunter", "https://hh.ru", vac_list1)
 
-    pd1 = pd.DataFrame(vac_list_dict)
+    pd1 = pd.DataFrame(vac_list_dict1)
     print(pd1.shape)  # (3, 8)
     excel_operator1.add_vacancies([vac4, vac1])
