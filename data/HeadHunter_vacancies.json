@@ -68,5 +68,35 @@
         "requirement": "Важно! Позиция для опытного разработчика уровня senior+ с опытом использования Nest.js. Что нужно от тебя: Глубокое понимание работы протоколов http...",
         "schedule": "Удаленная работа",
         "vac_id": 34
+    },
+    {
+        "name": "Senior Backend developer - Python",
+        "salary": 404045.1,
+        "currency": "RUR",
+        "created_at": "2025-03-05T09:49:50+03:00",
+        "url": "https://api.hh.ru/vacancies/117976885?host=hh.ru",
+        "requirement": "5+ years of hands-on experience as a <highlighttext>Python</highlighttext> Developer. You should be comfortable working with <highlighttext>Python</highlighttext> 3.8...",
+        "schedule": "Удаленная работа",
+        "vac_id": 25
+    },
+    {
+        "name": "Backend Python developer",
+        "salary": 300000,
+        "currency": "RUR",
+        "created_at": "2025-03-05T10:54:11+03:00",
+        "url": "https://api.hh.ru/vacancies/117981645?host=hh.ru",
+        "requirement": "Опыт разработки на <highlighttext>Python</highlighttext> от 3 лет. Глубокое знание алгоритмов и структур данных. Опыт работы с веб-фреймворками <highlighttext>Python</highlighttext> (например...",
+        "schedule": "Полный день",
+        "vac_id": 15
+    },
+    {
+        "name": "Backend-разработчик (Python) с опытом во Frontend (React)",
+        "salary": 300000,
+        "currency": "RUR",
+        "created_at": "2025-03-04T11:31:17+03:00",
+        "url": "https://api.hh.ru/vacancies/117342329?host=hh.ru",
+        "requirement": "Опыт Backend-разработки на <highlighttext>Python</highlighttext> от 2 лет. Глубокие знания фреймворка Django. Опыт Frontend-разработки на React.js (уровень взаимодействия с...",
+        "schedule": "Удаленная работа",
+        "vac_id": 43
     }
 ]
