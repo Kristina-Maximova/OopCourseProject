@@ -29,10 +29,12 @@ class ExcelOperator(VacanciesOperator):
                 columns=['name', 'salary', 'currency', 'created_at', 'url', 'requirement', 'schedule', "vac_id"])
             df.to_excel(self.__file_path, index=False, sheet_name="sheet_1", freeze_panes=(1, 0))
         # считываем данные из exel-файла и заносим их в список объекта как вакансии
-        vacs = pd.read_excel(self.__file_path, sheet_name='sheet_1')
+        vacs = pd.read_excel(self.__file_path, sheet_name='sheet_1') # vacs # <class 'pandas.core.frame.DataFrame'>
         if not vacs.empty:
+            vacs = list(vacs.to_dict(orient = "records"))  # vacs list[dict]
             for vacancy in vacs:
-                self.vacancies_list.append(Vacancy(**vacancy))
+                if Vacancy(**vacancy) not in set(self.vacancies_list):
+                    self.vacancies_list.append(Vacancy(**vacancy))
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         """ Метод для записи данных о вакансиях в excel-файл"""
@@ -48,6 +50,44 @@ class ExcelOperator(VacanciesOperator):
             ws.append(header)  # Записываем заголовки
             for row in vac_list_dict:
                 ws.append([row[col] for col in header])
+        wb = self.workbook_stile_setting(wb, sheet_name )
+        # Сохраняем в файл
+        wb.save(self.__file_path)
+
+    @property
+    def file_path(self):
+        """ Геттер для получения атрибута
+         К атрибуту можно обращаться без ()"""
+        return self.__file_path
+
+    def add_vacancies(self, vacs_list):
+        with self:  # тут работают __enter__ и __exit__
+            if vacs_list:
+                for vac in vacs_list:
+                    if isinstance(vac, Vacancy) and vac not in set(self.vacancies_list):
+                        self.vacancies_list.append(vac)
+
+    def get_vacancies(self, *args, **kwargs):
+
+        pass
+
+    def del_vacancies(self, *args, **kwargs):
+
+        pass
+
+    @staticmethod
+    def _get_file_name(source_name: str):
+        """ Метод для генерации имени файла, возвращает путь к файлу)"""
+        file_name = f"{source_name.replace(' ', '_')}_vacancies.xlsx"
+        project_root = os.path.dirname(os.path.abspath(__file__))
+        path_to_file = os.path.join(project_root, "..", "excel_files", file_name)
+        return path_to_file
+
+    @staticmethod
+    def workbook_stile_setting(workbook: Workbook, sheet_name: str) -> Workbook | None:
+        wb = workbook
+        ws = wb.active
+        ws.title = sheet_name
         # Настраиваем стили для красивого вида
         header_style = NamedStyle(name='header')
         header_style.font = Font(bold=True, color='FFFFFF')
@@ -83,37 +123,7 @@ class ExcelOperator(VacanciesOperator):
                     pass
             adjusted_width = (max_length + 2)
             ws.column_dimensions[column].width = adjusted_width
-        # Сохраняем файл
-        wb.save(self.__file_path)
-
-    @property
-    def file_path(self):
-        """ Геттер для получения атрибута
-         К атрибуту можно обращаться без ()"""
-        return self.__file_path
-
-    def add_vacancies(self, vacs_list):
-        with self:  # тут работают __enter__ и __exit__
-            if vacs_list:
-                for vac in vacs_list:
-                    if isinstance(vac, Vacancy) and vac not in set(self.vacancies_list):
-                        self.vacancies_list.append(vac)
-
-    def get_vacancies(self, *args, **kwargs):
-
-        pass
-
-    def del_vacancies(self, *args, **kwargs):
-
-        pass
-
-    @staticmethod
-    def _get_file_name(source_name: str):
-        """ Метод для генерации имени файла, возвращает путь к файлу)"""
-        file_name = f"{source_name.replace(' ', '_')}_vacancies.xlsx"
-        project_root = os.path.dirname(os.path.abspath(__file__))
-        path_to_file = os.path.join(project_root, "..", "excel_files", file_name)
-        return path_to_file
+        return workbook
 
 
 if __name__ == "__main__":  # pragma: no cover
@@ -146,6 +156,7 @@ if __name__ == "__main__":  # pragma: no cover
                       'url': "test_url3",
                       'requirement': "test_requirement3",
                       'schedule': "test_schedule3",
+                      "vac_id": 3
                       })
     vac4 = Vacancy(**{'name': "test4",
                       'salary': 0.04,
@@ -154,7 +165,17 @@ if __name__ == "__main__":  # pragma: no cover
                       'url': "test_url4",
                       'requirement': "test_requirement4",
                       'schedule': "test_schedule4",
-                      "vac_id": 3
+                      "vac_id": 4
+                      })
+
+    vac5 = Vacancy(**{'name': "test5",
+                      'salary': 0.05,
+                      'currency': "RUR",
+                      'created_at': "test_date4",
+                      'url': "test_url4",
+                      'requirement': "test_requirement4",
+                      'schedule': "test_schedule4",
+                      "vac_id": 5
                       })
 
     vac_list1 = [vac1, vac2, vac3]
@@ -162,5 +183,5 @@ if __name__ == "__main__":  # pragma: no cover
     excel_operator1 = ExcelOperator("HeadHunter", "https://hh.ru", vac_list1)
 
     pd1 = pd.DataFrame(vac_list_dict1)
-    print(pd1.shape)  # (3, 8)
-    excel_operator1.add_vacancies([vac4, vac1])
+    # print(pd1.shape)  # (3, 8)
+    excel_operator1.add_vacancies([vac3, vac4])
